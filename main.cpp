@@ -23,7 +23,7 @@ Chessboard cb;
 
      cout << endl;
 
-     cb.submitMove("E4", "D5");
+     cb.submitMove("D4", "F3");
 
 
      cout << endl;

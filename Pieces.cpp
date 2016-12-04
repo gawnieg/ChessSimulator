@@ -136,11 +136,54 @@ return INVALID_KING_MOVE;
 
 }
 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
 Knight::Knight( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Knight constructor
 	}
+int Knight::makemove(string position, string targetposition){
+	//check if moves are valid. No blocking checking required for Knight
+	//D4 to E6
+	if(targetposition[0]-position[0]==1 && targetposition[1]-position[1]==2){
+		return MOVE_VALID;
+	}
+	//D4 to F5
+	if(targetposition[0]-position[0]==2 && targetposition[1]-position[1]==1){
+		return MOVE_VALID;
+	}
+	//D4 to C6
+	if(position[0]-targetposition[0]==1 && targetposition[1]-position[1]==2){
+		return MOVE_VALID;
+	}
+	//D4 to B5
+	if(position[0]-targetposition[0]==2 && targetposition[1]-position[1]==1){
+		return MOVE_VALID;
+	}
+	//D4 to B3
+	if(position[0]-targetposition[0]==2 && position[1]-targetposition[1]==1){
+		return MOVE_VALID;
+	}
+	//D4 to C2
+	if(position[0]-targetposition[0]==1 && position[1]-targetposition[1]==2){
+		return MOVE_VALID;
+	}
+	//D4 to E2
+	if(targetposition[0]-position[0]==1 && position[1]-targetposition[1]==2){
+		return MOVE_VALID;
+	}
+	//D4 to F3
+	if(targetposition[0]-position[0]==2 && position[1]-targetposition[1]==1){
+		return MOVE_VALID;
+	}
+
+	return KNIGHT_INVALID_MOVE;
+
+
+
+}
+
+
 
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

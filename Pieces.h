@@ -69,6 +69,7 @@ int Check_If_Blocked_Vertical(const string &position, const string &targetpositi
 class Knight:public Piece{
 	public:
 	Knight(string _name,bool _colour, string _position, Chessboard* chessboardptr);
+	virtual int makemove(string position, string targetposition);
 };
 
 
