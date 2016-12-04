@@ -18,7 +18,7 @@ bool piececolour; //true if black
 string name; //example
 int Check_If_Blocked_Vertical(const string &position, const string &targetposition); //overridden in some classes
 int Check_If_Blocked_Horizontal(const string &position, const string &targetposition);//checks if blocked horiztonally
-
+int Check_If_Blocked_Diag(const string &position, const string &targetposition);
 public:
 Piece(bool _colour, string _name, string _position, Chessboard* chessboardptr);
 string getPieceName();
@@ -46,6 +46,9 @@ class Rook:public Piece{
 class Bishop:public Piece{
 	public:
 	Bishop(string _name,bool _colour, string _position, Chessboard* chessboardptr);
+	int makemove(string position, string targetposition);
+
+
 };
 class King:public Piece{
 	public:

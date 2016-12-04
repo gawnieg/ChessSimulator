@@ -53,7 +53,7 @@ Knight::Knight( string _name,bool _colour, string _position, Chessboard* chessbo
 	}
 
 
-
+/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 Rook::Rook( string _name, bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Rook constructor
@@ -111,6 +111,32 @@ Bishop::Bishop(string _name,bool _colour, string _position, Chessboard* chessboa
 		//Bishop constructor
 
 	}
+
+
+int Bishop::makemove(string position, string targetposition){
+	cout << "Bishop version of makemove is called" << endl;
+	cout << "This bishops colour is " << this->getPieceColour() << endl;
+	cout << "This bishops name " << this-> getPieceName() << endl;
+	cout << "position[1] is " << position[1] <<endl;
+	cout << "targetposition[1] is " << targetposition[1] <<endl;
+	cout << "targetposition[1] - position[1]" << targetposition[1]-position[1] <<endl;
+	cout << "position[0] is " << position[0] <<endl;
+	cout << "targetposition[0] is " << targetposition[0] <<endl;
+	cout << "targetposition[0] - position[0]" << targetposition[0]-position[0] <<endl;
+
+// if abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]) then it is a diagonal move
+
+	if((abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]))\
+	&&Check_If_Blocked_Diag(position,targetposition)==0){
+		cout << "The requested move is indeed diagonal" <<endl;
+		return MOVE_VALID;
+	}
+
+
+
+return INVALID_BISHOP_MOVE;
+
+}
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 Pawn::Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
@@ -160,7 +186,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! and not blocked,can move pawn forwards "<<\
 				position[1]-targetposition[1] << "spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return MOVE_VALID;
 			}
 		}
 		if(this->getPieceColour() ==1){//the piece to be moved is black
@@ -170,7 +196,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! can move pawn forwards "<<\
 				targetposition[1]-position[1] << " spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return MOVE_VALID;
 			}
 		}
 
@@ -184,7 +210,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! ,can move pawn forwards "<<\
 				position[1]-targetposition[1] << "spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return INVALID_BISHOP_MOVE;
 			}
 		}
 		//now diagonal kill move
@@ -195,7 +221,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! ,can move pawn diagonally for the kill "<<\
 				position[0]-targetposition[0] << "spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return INVALID_BISHOP_MOVE;
 			}
 		}
 
@@ -207,7 +233,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! can move pawn forwards "<<\
 				targetposition[1]-position[1] << " spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return INVALID_BISHOP_MOVE;
 			}
 		}
 		if(this->getPieceColour() ==0){//the piece to be moved is white and it is a diagonal move
@@ -216,7 +242,7 @@ int Pawn::makemove(string position, string targetposition){
 				cout << "move requested is ok! ,can move pawn diagonally for the kill "<<\
 				targetposition[0]-position[0] << "spaces" <<endl;
 				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return 0;
+				return INVALID_BISHOP_MOVE;
 			}
 		}
 
@@ -341,5 +367,81 @@ int Piece::Check_If_Blocked_Horizontal(const string &position, const string &tar
 		}
 	}
 
-	return 0;
+	return INVALID_BISHOP_MOVE;
+}
+
+int Piece::Check_If_Blocked_Diag(const string &position, const string &targetposition){
+
+
+	/*
+	this function will return zero if the piece is not blocked in its path
+	this function will return an error number if the path is blocked
+	Checks up to but not including destination position for occupation
+	*/
+	cout << "generic piece class checking if blocked diagonnally on its way" <<endl;
+
+	if(targetposition[0] -position[0]>0 && targetposition[1]-position[1]>0){ // moving down the board from the black side to the white side
+		cout << "MOVING Example A1->D4 " <<endl;
+		for(int i=1; i<(targetposition[1]-position[1]); i++){// 1 starting as dont want to check itself!
+			string temp;
+			temp+=position[0]+i;
+			temp+=position[1]+i;
+			//find the piece at each of those locations on the way
+			cout << "checking" <<temp << "for obstruction" <<endl;
+			if(chessboardptr->Check_If_Piece_Active(temp)==1){
+				return PIECE_BLOCKED;
+			}
+		}
+	}
+
+	if(position[0] -targetposition[0]>0 && position[1]-targetposition[1]>0){// moving up the board!
+		cout << "MOVING Example D4->A1 " <<endl;
+		for(int i=1; i<(position[0]-targetposition[0]); i++){
+			string temp;
+			temp+=position[0]-i;
+			temp+=position[1]-i;
+			//find the piece at each of those locations on the way
+			cout << "checking" <<temp << "for obstruction" <<endl;
+			if(chessboardptr->Check_If_Piece_Active(temp)==1){
+				return PIECE_BLOCKED;
+			}
+
+		}
+	}
+
+	if(position[0] -targetposition[0]>0 && targetposition[1]-position[1]>0){// moving up the board!
+		cout << "MOVING Example D1->A4 " <<endl;
+		for(int i=1; i<(targetposition[1]-position[1]); i++){
+			string temp;
+			temp+=position[0]-i;
+			temp+=position[1]+i;
+			//find the piece at each of those locations on the way
+			cout << "checking" <<temp << "for obstruction" <<endl;
+			if(chessboardptr->Check_If_Piece_Active(temp)==1){
+				return PIECE_BLOCKED;
+			}
+
+		}
+	}
+	if(targetposition[0] -position[0]>0 && position[1]-targetposition[1]>0){// moving up the board!
+		cout << "MOVING Example A4->D1 " <<endl;
+		for(int i=1; i<(position[1]-targetposition[1]); i++){
+			string temp;
+			temp+=position[0]+i;
+			temp+=position[1]-i;
+			//find the piece at each of those locations on the way
+			cout << "checking" <<temp << "for obstruction" <<endl;
+			if(chessboardptr->Check_If_Piece_Active(temp)==1){
+				return PIECE_BLOCKED;
+			}
+
+		}
+	}
+
+
+
+return MOVE_VALID;
+
+
+
 }

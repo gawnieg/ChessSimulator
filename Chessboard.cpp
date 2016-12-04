@@ -11,14 +11,14 @@ Chessboard::Chessboard(){
 	//chessboard constructor
 	//creating pieces
 
-	whiter1 = new Rook("White's Rook", true, "A1", this);
+	// whiter1 = new Rook("White's Rook", true, "A1", this);
 	whiter2 = new Rook("White's Rook", true, "H1", this);
 	blackr1 = new Rook("Black's Rook", false, "A8", this);
 	blackr2 = new Rook("Black's Rook", false, "H8", this);
 
-	whiteb1 = new Bishop("White's Bishop", true, "C1", this);
+	whiteb1 = new Bishop("White's Bishop", true, "A1", this);
 	whiteb2 = new Bishop("White's Bishop", true, "F1", this);
-	blackb1 = new Bishop("Black's Bishop", false, "C8", this);
+	blackb1 = new Bishop("Black's Bishop", false, "C6", this); //was C*
 	blackb2 = new Bishop("Black's Bishop", false, "F8", this);
 
 	whitek1 = new Knight("White's Knight", true, "B1", this);
@@ -26,14 +26,14 @@ Chessboard::Chessboard(){
 	blackk1 = new Knight("Black's Knight", false, "B8", this);
 	blackk2 = new Knight("Black's Knight", false, "G8", this);
 
-	whiteq = new Queen("White's Queen", true, "D1", this);
+	//whiteq = new Queen("White's Queen", true, "D1", this);
 	blackq = new Queen("Black's Queen", false, "D8", this);
 
 	whitek = new King("White's King", true, "E1", this);
 	blackk = new King("Black's King", false, "E8", this);
 
 	whitep1 = new Pawn("White's Pawn stA2", true, "A2", this);
-	whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
+	 //whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
 	whitep3 = new Pawn("White's Pawn stC2", true, "C2", this);//should be C2
 	whitep4 = new Pawn("White's Pawn stD2", true, "D2", this);
 	whitep5 = new Pawn("White's Pawn stE2", true, "E2", this);
@@ -46,7 +46,7 @@ Chessboard::Chessboard(){
 	blackp3 = new Pawn("Black's Pawn stC7", false, "C7", this); //this one
 	blackp4 = new Pawn("Black's Pawn stD7", false, "D7", this);
 	blackp5 = new Pawn("Black's Pawn stE7", false, "E7", this);
-	blackp6 = new Pawn("Black's Pawn stF7", false, "F7", this);
+	blackp6 = new Pawn("Black's Pawn stF7", false, "F3", this);
 	blackp7 = new Pawn("Black's Pawn stG7", false, "G7", this); //this one
 	blackp8 = new Pawn("Black's Pawn stH7", false, "H7", this);
 
