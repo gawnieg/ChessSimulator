@@ -34,7 +34,7 @@ virtual int makemove(string position, string targetposition);
 class Queen:public Piece{
 	public:
 	Queen(string _name,bool _colour, string _position, Chessboard* chessboardptr);
-
+	virtual int makemove(string position, string targetposition);
 
 };
 class Rook:public Piece{
@@ -53,6 +53,7 @@ class Bishop:public Piece{
 class King:public Piece{
 	public:
 	King( string _name,bool _colour, string _position, Chessboard* chessboardptr);
+	virtual int makemove(string position, string targetposition);
 	//virtual bool makemove(string position, string targetposition);
 };
 class Pawn:public Piece{

@@ -12,7 +12,7 @@ Chessboard::Chessboard(){
 	//creating pieces
 
 	// whiter1 = new Rook("White's Rook", true, "A1", this);
-	whiter2 = new Rook("White's Rook", true, "H1", this);
+	//whiter2 = new Rook("White's Rook", true, "E4", this);
 	blackr1 = new Rook("Black's Rook", false, "A8", this);
 	blackr2 = new Rook("Black's Rook", false, "H8", this);
 
@@ -26,14 +26,14 @@ Chessboard::Chessboard(){
 	blackk1 = new Knight("Black's Knight", false, "B8", this);
 	blackk2 = new Knight("Black's Knight", false, "G8", this);
 
-	//whiteq = new Queen("White's Queen", true, "D1", this);
-	blackq = new Queen("Black's Queen", false, "D8", this);
+	//whiteq = new Queen("White's Queen", true, "E4", this); //D1
+	blackq = new Queen("Black's Queen", false, "D6", this);
 
-	whitek = new King("White's King", true, "E1", this);
+	whitek = new King("White's King", true, "E4", this);
 	blackk = new King("Black's King", false, "E8", this);
 
 	whitep1 = new Pawn("White's Pawn stA2", true, "A2", this);
-	 //whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
+	 whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
 	whitep3 = new Pawn("White's Pawn stC2", true, "C2", this);//should be C2
 	whitep4 = new Pawn("White's Pawn stD2", true, "D2", this);
 	whitep5 = new Pawn("White's Pawn stE2", true, "E2", this);

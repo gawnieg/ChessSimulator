@@ -42,11 +42,101 @@ bool Piece::getPieceColour(){//getter function
 Queen::Queen( string _name, bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 	//Queen constuctor
+
+
 	}
+
+int Queen::makemove(string position, string targetposition){
+	cout << "Queen version of makemove is called" << endl;
+	cout << "This Queen's colour is " << this->getPieceColour() << endl;
+	cout << "This Queen name " << this-> getPieceName() << endl;
+	cout << "position[1] is " << position[1] <<endl;
+	cout << "targetposition[1] is " << targetposition[1] <<endl;
+	cout << "targetposition[1] - position[1]" << targetposition[1]-position[1] <<endl;
+	cout << "position[0] is " << position[0] <<endl;
+	cout << "targetposition[0] is " << targetposition[0] <<endl;
+	cout << "targetposition[1] - position[1]" << targetposition[0]-position[0] <<endl;
+
+
+	//check for diagonal
+	if((abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]))\
+	&&Check_If_Blocked_Diag(position,targetposition)==0){
+		cout << "The requested Queen move is  diagonal" <<endl;
+		return MOVE_VALID;
+	}
+	//vertical movement
+	if(((position[1]-targetposition[1] >=1 || targetposition[1]-position[1] >=1)\
+	&& position[0] == targetposition[0])\
+	&& Check_If_Blocked_Vertical(position, targetposition)==0 ){
+		cout << "move requested for Queen is vertical and is ok! "<<\
+		abs(position[1]-targetposition[1]) << "spaces vertically "<<endl;
+		return MOVE_VALID;
+
+	}
+	//horizontal movement
+	if(((position[0] -targetposition[0] >=1 ||targetposition[0]-position[0] >=1)\
+	&&position[1]==targetposition[1])&& \
+	Check_If_Blocked_Horizontal(position, targetposition)==0){
+		cout << "move requested for Queen is horizontal and is ok!" <<\
+		 abs(targetposition[0]-position[0])<< "spaces horizontally" <<endl;
+		 return MOVE_VALID;
+	}
+
+
+
+
+return INVALID_QUEEN_MOVE;
+
+}
 King::King( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//King constructor
 	}
+
+int King::makemove(string position, string targetposition){
+	cout << "King version of makemove is called" << endl;
+	cout << "This King's colour is " << this->getPieceColour() << endl;
+	cout << "This Kings name " << this-> getPieceName() << endl;
+	cout << "position[1] is " << position[1] <<endl;
+	cout << "targetposition[1] is " << targetposition[1] <<endl;
+	cout << "targetposition[1] - position[1]" << targetposition[1]-position[1] <<endl;
+	cout << "position[0] is " << position[0] <<endl;
+	cout << "targetposition[0] is " << targetposition[0] <<endl;
+	cout << "targetposition[0] - position[0]" << targetposition[0]-position[0] <<endl;
+
+
+	//check for diagonal
+	if(((abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]))\
+	&&abs(targetposition[1]-position[1])==1)\
+	&&Check_If_Blocked_Diag(position,targetposition)==0){
+		cout << "The requested King move is  diagonal" <<endl;
+		return MOVE_VALID;
+	}
+	//vertical movement
+	cout <<"checking if vertical" <<endl;
+	if(((position[1]-targetposition[1] ==1 || targetposition[1]-position[1] ==1)\
+	&& position[0] == targetposition[0])\
+	&& Check_If_Blocked_Vertical(position, targetposition)==0){
+		cout << "move requested for King is vertical and is ok! "<<\
+		abs(position[1]-targetposition[1]) << "spaces vertically "<<endl;
+		return MOVE_VALID;
+
+	}
+	//horizontal movement
+	if(((position[0] -targetposition[0]==1 ||targetposition[0]-position[0]==1)\
+	&&position[1]==targetposition[1])&& \
+	Check_If_Blocked_Horizontal(position, targetposition)==0){
+		cout << "move requested for King is horizontal and is ok!" <<\
+		 abs(targetposition[0]-position[0])<< "spaces horizontally" <<endl;
+		 return MOVE_VALID;
+	}
+
+
+return INVALID_KING_MOVE;
+
+}
+
+
 Knight::Knight( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Knight constructor
@@ -76,6 +166,7 @@ int Rook::makemove(string position, string targetposition){
 
 		//gonna subtract from the number part to move down the board
 		//vertical movement
+		cout <<"checking if vertical" <<endl;
 		if(((position[1]-targetposition[1] >=1 || targetposition[1]-position[1] >=1)\
 		&& position[0] == targetposition[0])\
 		&& Check_If_Blocked_Vertical(position, targetposition)==0 ){
@@ -83,7 +174,9 @@ int Rook::makemove(string position, string targetposition){
 			abs(position[1]-targetposition[1]) << "spaces vertically "<<endl;
 			return 0;
 		}
+		cout <<"not vertical" <<endl;
 		//horizontal movement
+		cout <<"checking if horizontal" <<endl;
 		if(((position[0] -targetposition[0] >=1 ||targetposition[0]-position[0] >=1)\
 		&&position[1]==targetposition[1])&& \
 		Check_If_Blocked_Horizontal(position, targetposition)==0){
@@ -339,8 +432,9 @@ int Piece::Check_If_Blocked_Horizontal(const string &position, const string &tar
 	this function will return an error number if the path is blocked
 	Checks up to but not including destination position for occupation
 	*/
-	cout << "generic piece class checking if blocked vertically on its way" <<endl;
+	cout << "generic piece class checking if blocked horizontally on its way" <<endl;
 	if(position[0] >targetposition[0]){ // moving down the board from the black side to the white side
+		cout << "(position[0] >targetposition[0]" <<endl;
 		for(int i=1; i<(position[0]-targetposition[0]); i++){// 1 starting as dont want to check itself!
 			string temp;
 			temp+=position[0]-i;
@@ -354,6 +448,7 @@ int Piece::Check_If_Blocked_Horizontal(const string &position, const string &tar
 	}
 
 	if(targetposition[0] >position[0]){// moving up the board!
+		cout << "(targetposition[0] >target[0]" <<endl;
 		for(int i=1; i<(targetposition[0]-position[0]); i++){
 			string temp;
 			temp+=i+position[0];
@@ -367,7 +462,7 @@ int Piece::Check_If_Blocked_Horizontal(const string &position, const string &tar
 		}
 	}
 
-	return INVALID_BISHOP_MOVE;
+	return MOVE_VALID;
 }
 
 int Piece::Check_If_Blocked_Diag(const string &position, const string &targetposition){
