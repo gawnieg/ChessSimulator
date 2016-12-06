@@ -23,10 +23,11 @@ Chessboard cb;
 
      cout << endl;
 
-     cb.submitMove("D4", "F3");
+     cb.submitMove("C2", "C4");
 
-
+cout << "End of main" << endl;
      cout << endl;
+     return 0;
 
  //cb.submitMove("B4", "B5");
 /*
@@ -91,5 +92,5 @@ Chessboard cb;
      cout << endl;
  */
 
-     return 0;
+
  }
