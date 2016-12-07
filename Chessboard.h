@@ -56,6 +56,10 @@ class Chessboard{
 bool Is_Check_Black2();//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
 int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
 
+string Where_is_the_king(bool colour);//might delete??
+
+void Move_Piece(string currentposition, string updateposition);
+
 	public:
 	Chessboard();
 	void setupboardmap(string position, Piece* pieceptr); //function to enter values into board map when they are being constructed

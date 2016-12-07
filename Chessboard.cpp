@@ -14,20 +14,20 @@ Chessboard::Chessboard(){
 	//chessboard constructor
 	//creating pieces
 
-	whiter1 = new Rook("White's Rook", true, "A1", this);
+	// whiter1 = new Rook("White's Rook", true, "A1", this);
 	whiter2 = new Rook("White's Rook", true, "E6", this);
-	blackr1 = new Rook("Black's Rook", false, "A8", this);
-	blackr2 = new Rook("Black's Rook", false, "H8", this);
+	// blackr1 = new Rook("Black's Rook", false, "A8", this);
+	// blackr2 = new Rook("Black's Rook", false, "H8", this);
 
-	whiteb1 = new Bishop("White's Bishop", true, "A1", this);
-	whiteb2 = new Bishop("White's Bishop", true, "F1", this);
-	blackb1 = new Bishop("Black's Bishop", false, "C1", this); //was C*
+	// whiteb1 = new Bishop("White's Bishop", true, "A1", this);
+	// whiteb2 = new Bishop("White's Bishop", true, "F1", this);
+	// blackb1 = new Bishop("Black's Bishop", false, "C1", this); //was C*
 	blackb2 = new Bishop("Black's Bishop", false, "F8", this);
 
-	whitek1 = new Knight("White's Knight", true, "B1", this);
-	whitek2 = new Knight("White's Knight", true, "G1", this);
-	blackk1 = new Knight("Black's Knight", false, "B8", this);
-	blackk2 = new Knight("Black's Knight", false, "G8", this);
+	// whitek1 = new Knight("White's Knight", true, "B1", this);
+	// whitek2 = new Knight("White's Knight", true, "G1", this);
+	// blackk1 = new Knight("Black's Knight", false, "B8", this);
+	// blackk2 = new Knight("Black's Knight", false, "G8", this);
 
 	whiteq = new Queen("White's Queen", true, "E7", this); //D1
 	//blackq = new Queen("Black's Queen", false, "D8", this);
@@ -35,23 +35,23 @@ Chessboard::Chessboard(){
 	whitek = new King("White's King", true, "E1", this);
 	blackk = new King("Black's King", false, "E8", this);
 
-	whitep1 = new Pawn("White's Pawn stA2", true, "A2", this);
-	whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
+	// whitep1 = new Pawn("White's Pawn stA2", true, "A2", this);
+	// whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
 	whitep3 = new Pawn("White's Pawn stC2", true, "C2", this);//should be C2
-	whitep4 = new Pawn("White's Pawn stD2", true, "D2", this);
-	whitep5 = new Pawn("White's Pawn stE2", true, "E2", this);
-	whitep6 = new Pawn("White's Pawn stF2", true, "F2", this);
-	whitep7 = new Pawn("White's Pawn stG2", true, "G2", this);
-	whitep8 = new Pawn("White's Pawn stH2", true, "H2", this);
-	//
-	blackp1 = new Pawn("Black's Pawn stA7", false, "A7", this);
-	blackp2 = new Pawn("Black's Pawn stB7", false, "B7", this);
-	blackp3 = new Pawn("Black's Pawn stC7", false, "C7", this); //this one
-	blackp4 = new Pawn("Black's Pawn stD7", false, "D7", this);
-	// blackp5 = new Pawn("Black's Pawn stE7", false, "E7", this);
-	blackp6 = new Pawn("Black's Pawn stF7", false, "F7", this);
-	blackp7 = new Pawn("Black's Pawn stG7", false, "G7", this); //this one
-	blackp8 = new Pawn("Black's Pawn stH7", false, "H7", this);
+	// whitep4 = new Pawn("White's Pawn stD2", true, "D2", this);
+	// whitep5 = new Pawn("White's Pawn stE2", true, "E2", this);
+	// whitep6 = new Pawn("White's Pawn stF2", true, "F2", this);
+	// whitep7 = new Pawn("White's Pawn stG2", true, "G2", this);
+	// whitep8 = new Pawn("White's Pawn stH2", true, "H2", this);
+	// //
+	// blackp1 = new Pawn("Black's Pawn stA7", false, "A7", this);
+	// blackp2 = new Pawn("Black's Pawn stB7", false, "B7", this);
+	// blackp3 = new Pawn("Black's Pawn stC7", false, "C7", this); //this one
+	// blackp4 = new Pawn("Black's Pawn stD7", false, "D7", this);
+	blackp5 = new Pawn("Black's Pawn stE7", false, "E7", this);
+	// blackp6 = new Pawn("Black's Pawn stF7", false, "F7", this);
+	// blackp7 = new Pawn("Black's Pawn stG7", false, "G7", this); //this one
+	// blackp8 = new Pawn("Black's Pawn stH7", false, "H7", this);
 
 	/*Printing board after construction*/
 	PrintBoard();
@@ -85,6 +85,22 @@ void Chessboard::Delete_Piece(string position){
 	else{
 		cout << "Error, no piece in position" << position << endl;
 	}
+
+}
+
+void Chessboard::Move_Piece(string currentposition, string updateposition){
+	//function that moves a piece by updating its position rather than deleting it from the arrays
+	//necessary as the kings need to be found consistently
+	Piece* piece;
+
+	activeit = activepieces.find(currentposition);
+	if(activeit != activepieces.end() ){
+		//(activeit->first) = updateposition;
+
+	}
+
+
+
 
 }
 
@@ -221,12 +237,30 @@ int Chessboard::submitMove(string position, string position_target){
 			cout << "Check_Checkmate_White is" << errorcode <<endl;
 	}
 
+	cerr << "printing before return to main" <<endl;
+	PrintBoard();
+
+/*
+	cout << "trying out where is black king" <<endl;
+	cout << Where_is_the_king(0) << endl;
+
+		cout << "trying out where is white king" <<endl;
+		cout << Where_is_the_king(1) << endl;
+*/
+
+	// testing section
+	cout << "Testing Move_Piece function" <<endl;
+	Move_Piece("E8","A2" );
+
+
+
+
 
 
 	/* THE ITEMS IN THE FOLLOWING SECTION SHOULD BE DONE LAST */
 
 		//then function to clear the possible move arrays
-	cout << "clearing possible move lists for each piece "<< Clear_Possible_Move_Lists() << endl;
+	cerr << "clearing possible move lists for each piece "<< Clear_Possible_Move_Lists() << endl;
 
 	Change_Turn(); // changes the turn of the game from white to black and vice versa. SHould be done last.
 	cout << "Error code in submitMove is " << errorcode << endl;
@@ -297,7 +331,7 @@ int Chessboard::Check_Checkmate_Black(){
 						#endif
 					}
 
-//not looping to here
+
 					if(targetexists==true){ // if there is a piece in the target position then call function to delete it
 
 						cout << "0. Deleting " << temptargetpiece << " from " << targetposition <<endl;
@@ -311,7 +345,8 @@ int Chessboard::Check_Checkmate_Black(){
 					//Update_Active_Pieces((piece->actual_possible_moves.at(k)),targetposition, piece); //upadte the active list
 
 					//update board
-					cout << "1. Inserting" << piece<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
+					cout << "1. Inserting" << piece << " aka " << \
+					piece->getPieceName()<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
 					activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), piece));
 
 					cout << "2. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
@@ -322,6 +357,11 @@ int Chessboard::Check_Checkmate_Black(){
 					//now check if check is still occuring.
 					cout << "Now checking if check is still occuring by calling Is_Check_Black2" <<endl;
 					int stillcheckblack=0;
+					cout << "Check_Checkmate_Black the kings pos is " <<blackk->getPosition() <<endl;
+
+
+
+					//problem here as King is still being sent/used as E8 in this function
 					stillcheckblack=Is_Check_Black2();
 					cout << "Is_Check_Black2 returns " << stillcheckblack<< endl;
 
@@ -361,7 +401,7 @@ int Chessboard::Check_Checkmate_Black(){
 						//undo moves and return false to calling submitMove. is not in checkmate
 						Delete_Piece(targetposition);
 						//inserting piece in original position
-						activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), temppiece));
+						activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
 
 						if(targetexists==true){
 							// inserting deleted target piece
@@ -413,6 +453,36 @@ Piece* piece;
 	}
 return MOVE_VALID;
 }//end of function
+
+
+string Chessboard::Where_is_the_king(bool colour){
+
+	if(colour==true){
+		//search for the white king
+		for(it=activepieces.begin();it != activepieces.end(); it++){
+			if((it->second)->getPieceName() == "White's King"){
+				return (it->first);
+			}
+		}
+
+	if(colour==false){
+		//search for the black king
+		for(it=activepieces.begin();it != activepieces.end(); it++){
+			if((it->second)->getPieceName() == "Black's King"){
+				return (it->first);
+			}
+		}
+	}
+
+}
+
+
+
+}
+
+
+
+
 
 
 
@@ -520,13 +590,24 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 			cout << "Check_All_Possible_Moves piece makemove says no" << endl;
 			#endif
 		}
-		// // if there is no problem with the move then add it to the possible moves vector
+
+
+		// //delete old possible moves first
+		// piece->actual_possible_moves.clear();
+		//
+		//
+		// // // if there is no problem with the move then add it to the possible moves vector
 		// if(testmoveint==0){
 		// 	#ifdef COMMENTS_ON
 		// 	cout << "adding "<< piece_possible_moves[i]<<" to actual_possible_moves " <<endl;
 		// 	#endif
 		// 	piece->actual_possible_moves.push_back(piece_possible_moves[i]);
 		// }
+
+
+
+
+
 
 
 		// //experimental - checking if the move brings the black king in check
@@ -561,7 +642,6 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 	//possible moves vector
 	// #ifdef COMMENTS_ON
 	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
-
 	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
 		cout << piece->actual_possible_moves[i]  << " ";
 	}

@@ -34,6 +34,10 @@ bool Piece::getPieceColour(){//getter function
 	return piececolour;
 }
 
+string Piece::setPosition(string future){
+	position = future;
+
+}
 
 
 
