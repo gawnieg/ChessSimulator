@@ -24,6 +24,11 @@ class Chessboard{
 	vector<string> positions_threatening_wking;
 	vector<string> positions_threatening_bking;
 
+
+
+
+
+
 	Rook *whiter1, *whiter2, *blackr1, *blackr2;
 	Bishop *whiteb1, *whiteb2, *blackb1, *blackb2;
 	Knight *whitek1, *whitek2, *blackk1, *blackk2;
@@ -48,6 +53,8 @@ class Chessboard{
 	int Check_Checkmate_White();
 	int Check_Checkmate_Black();
 
+bool Is_Check_Black2();//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
+int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
 
 	public:
 	Chessboard();

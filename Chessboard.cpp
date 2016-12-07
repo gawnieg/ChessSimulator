@@ -3,6 +3,7 @@
 #include "Pieces.h"
 #include "errors.h"
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ Chessboard::Chessboard(){
 	//creating pieces
 
 	whiter1 = new Rook("White's Rook", true, "A1", this);
-	whiter2 = new Rook("White's Rook", true, "E4", this);
+	whiter2 = new Rook("White's Rook", true, "E6", this);
 	blackr1 = new Rook("Black's Rook", false, "A8", this);
 	blackr2 = new Rook("Black's Rook", false, "H8", this);
 
@@ -29,7 +30,7 @@ Chessboard::Chessboard(){
 	blackk2 = new Knight("Black's Knight", false, "G8", this);
 
 	whiteq = new Queen("White's Queen", true, "E7", this); //D1
-	blackq = new Queen("Black's Queen", false, "D8", this);
+	//blackq = new Queen("Black's Queen", false, "D8", this);
 
 	whitek = new King("White's King", true, "E1", this);
 	blackk = new King("Black's King", false, "E8", this);
@@ -272,7 +273,8 @@ int Chessboard::Check_Checkmate_Black(){
 					if(piece->getPieceColour()==turn){
 						continue;//if the move is that of the current turn colour then the move will not be considered
 					}
-					cout << "Moving " << piece->getPieceName() <<" to " << piece->actual_possible_moves.at(k)\
+					cout << "Moving " << piece->getPieceName() << " from "\
+					 << piece->getPosition() <<" to " << piece->actual_possible_moves.at(k)\
 					<<" to see if  check still occurs" << endl;
 					#endif
 					string targetposition =  piece->actual_possible_moves.at(k);
@@ -286,6 +288,7 @@ int Chessboard::Check_Checkmate_Black(){
 						cout << "There is a " << (activeit->second)->getPieceName() \
 						<< "at this target position " << targetposition << endl;
 						#endif
+						temptargetpiece=(activeit->second);
 						targetexists=true;
 					}
 					if(activeit == activepieces.end()){
@@ -296,34 +299,58 @@ int Chessboard::Check_Checkmate_Black(){
 
 //not looping to here
 					if(targetexists==true){ // if there is a piece in the target position then call function to delete it
+
+						cout << "0. Deleting " << temptargetpiece << " from " << targetposition <<endl;
+
 						TakeTargetPiece(targetposition); // deleting target piece
 					}
 
+
+
 					//section to move piece to position_target on board and update activepieces list
-					Update_Active_Pieces((piece->actual_possible_moves.at(k)),targetposition, piece); //upadte the active list
+					//Update_Active_Pieces((piece->actual_possible_moves.at(k)),targetposition, piece); //upadte the active list
+
+					//update board
+					cout << "1. Inserting" << piece<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
+					activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), piece));
+
+					cout << "2. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
+					Delete_Piece(piece_possible_moves[i]);
 					//prrinting the board for debugging
 					PrintBoard();
 
 					//now check if check is still occuring.
-					cout << "Now checking if check is still occuring by calling Is_Check_Black" <<endl;
+					cout << "Now checking if check is still occuring by calling Is_Check_Black2" <<endl;
 					int stillcheckblack=0;
-					stillcheckblack=Is_Check_Black();
-					cout << "returns" << stillcheckblack<< endl;
+					stillcheckblack=Is_Check_Black2();
+					cout << "Is_Check_Black2 returns " << stillcheckblack<< endl;
 
 					if(stillcheckblack==1){ //still in check so undo move and try next
 						#ifdef COMMENTS_ON_CHECK
 						cout << "Undo-ing move as this does not get rid of check" <<endl;
-						#endif
 						//undo new piece move
-						Delete_Piece(targetposition);
+						cout << "3. Deleting  "<< piece << "from " << piece->actual_possible_moves.at(k) << endl;
+						#endif
+						Delete_Piece(piece->actual_possible_moves.at(k));
 						//inserting piece in original position
-						activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), temppiece));
+						#ifdef COMMENTS_ON_CHECK
+						cout << "4. ReInserting old " << temppiece << " @ " << piece_possible_moves[i] << endl;
+						#endif
+						activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
 
 						if(targetexists==true){
 							// inserting deleted target piece
+							#ifdef COMMENTS_ON_CHECK
+							cout << "5. Reinserting targetposition " << temptargetpiece << " @ " << targetposition << endl;
+							#endif
 							activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
 
 						}
+						#ifdef COMMENTS_ON_CHECK
+						cout << "6. Printing at end of reshuffle" << endl;
+
+						PrintBoard();
+						#endif
 
 
 					}
@@ -339,8 +366,8 @@ int Chessboard::Check_Checkmate_Black(){
 						if(targetexists==true){
 							// inserting deleted target piece
 							activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
-
 						}
+						PrintBoard();
 
 						return 0;
 					}
@@ -369,7 +396,6 @@ int Chessboard::Check_Checkmate_Black(){
 
 
 int Chessboard::Clear_Possible_Move_Lists(){
-
 Piece* piece;
 	//want to delete all mo
 	for(unsigned int i =0; i< piece_possible_moves.size(); i++){
@@ -389,6 +415,162 @@ return MOVE_VALID;
 }//end of function
 
 
+
+bool Chessboard::Is_Check_Black2(){
+	//returns true if it is check
+	//returns 0 if not check
+
+	bool incheck=0; //1 if incheck
+	//checking where the kings are at
+	cout<< "The black king is at" << blackk->getPosition()<< endl;
+
+	cout <<"Is_Check_Black2 -- clearing threatening pieces list" << endl;
+	 positions_threatening_bking.clear(); // need to clear before!!!!
+	 cout << "Printing positions_threatening_bking before Check_All_Possible_Moves2" << endl;
+ 	for(unsigned int i=0; i < positions_threatening_bking.size(); i++){
+ 			cout << positions_threatening_bking[i] <<endl;
+ 	}
+
+
+
+
+	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
+		#ifdef COMMENTS_ON
+		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
+		cout << "Checking " << piece_possible_moves[i] <<endl;
+		#endif
+		Check_All_Possible_Moves2(piece_possible_moves[i]);
+	}
+
+	//printing positions_threatening_bking
+	cout << "Printing positions_threatening_bking after Check_All_Possible_Moves2" << endl;
+	for(unsigned int i=0; i < positions_threatening_bking.size(); i++){
+			cout << positions_threatening_bking[i] <<endl;
+	}
+
+
+	if(positions_threatening_bking.size() >0){
+		incheck=true;
+	}
+
+
+	cout << "The in check status is " << incheck << endl;
+
+	return incheck;
+
+}
+
+
+int Chessboard::Check_All_Possible_Moves2(string position){
+// this function is version 2 as dont want it to add to the list of actual_possible_moves - is for checkmate checking
+
+	Piece* piece;
+
+	//checking if piece at requested move position exists!
+	activeit = activepieces.find(position);
+	if(activeit != activepieces.end() ){
+		piece = activeit->second;
+		#ifdef COMMENTS_ON
+		cout << "Chessboard::Check_All_Possible_Moves:" <<endl <<" There is a " <<\
+		 (activeit->second)->getPieceName() \
+		<< " at this position " << position << endl;
+		cout <<endl;
+		#endif
+
+	}
+	else{
+		#ifdef COMMENTS_ON
+		cout<< "No piece at position specified " << endl;
+		#endif
+		return NO_PIECE_AT_REQUESTED_MOVE_CHECK;
+	}
+
+
+
+
+	//cout<< "The size of vector element is " << piece_possible_moves.size()<< endl;
+	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
+		#ifdef COMMENTS_ON
+		cout << endl;
+		cout << "Checking element "<< i << " which is " << (piece_possible_moves[i]) << " for possible move" <<endl;
+		#endif
+		int testmoveint =0;
+		//if the position to be checked is the position that it cucrently is then skip
+		if(piece_possible_moves[i] == position){
+			continue;
+		}
+
+
+		//checking if the target is valid, in terms of range and colour in target position
+		testmoveint = this->Check_Move_Target_Valid(position, (piece_possible_moves[i]));
+		#ifdef COMMENTS_ON
+		cout <<"testmoveint after Check_Move_Target_Valid is " << testmoveint <<endl;
+		#endif
+		if( testmoveint!=0){
+			#ifdef COMMENTS_ON
+			cout << "Check_All_Possible_Moves Check_Move_Target_Valid says no" << endl;
+			#endif
+			continue;
+		}
+		//checking if the piece is allowed to make this move
+		testmoveint = piece->makemove(position, (piece_possible_moves[i]));
+		//cout << "printing testmoveint after makemove testing " << testmoveint<<endl;
+		if( testmoveint!=0){
+			#ifdef COMMENTS_ON
+			cout << "Check_All_Possible_Moves piece makemove says no" << endl;
+			#endif
+		}
+		// // if there is no problem with the move then add it to the possible moves vector
+		// if(testmoveint==0){
+		// 	#ifdef COMMENTS_ON
+		// 	cout << "adding "<< piece_possible_moves[i]<<" to actual_possible_moves " <<endl;
+		// 	#endif
+		// 	piece->actual_possible_moves.push_back(piece_possible_moves[i]);
+		// }
+
+
+		// //experimental - checking if the move brings the black king in check
+		//adding threatening move to list for threatening black
+		if(testmoveint==0 && piece_possible_moves[i]==blackk->getPosition()&& \
+		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+		 positions_threatening_bking.end()) &&piece->getPieceColour()==true){
+			cout<< "adding to the threatening the black king list" <<endl;
+			this->positions_threatening_bking.push_back(position);
+		}
+
+
+
+
+		if(testmoveint==0 && piece_possible_moves[i]==whitek->getPosition()&& \
+		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+		 positions_threatening_bking.end())&&piece->getPieceColour()==false ){
+			this->positions_threatening_wking.push_back(position);
+			// this->positions_threatening_wking.push_back(piece_possible_moves[i]);
+			/* this is incorrectly saying the position that is threatening the king, which is the position
+			of the king itself */
+
+		}
+
+
+
+
+
+	}
+
+
+	//possible moves vector
+	// #ifdef COMMENTS_ON
+	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
+
+	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
+		cout << piece->actual_possible_moves[i]  << " ";
+	}
+	cout <<"]" <<endl;
+	// #endif
+
+
+	return MOVE_VALID;
+}
 
 
 
@@ -461,12 +643,15 @@ int Chessboard::Check_All_Possible_Moves(string position){
 
 
 		// //experimental - checking if the move brings the black king in check
-		if(testmoveint==0 && piece_possible_moves[i]==blackk->getPosition()){
+		if(testmoveint==0 && piece_possible_moves[i]==blackk->getPosition()&& \
+		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+		 positions_threatening_bking.end()) &&piece->getPieceColour()==true){
 			cout<< "adding to the threatening the black king list" <<endl;
 			this->positions_threatening_bking.push_back(position);
 		}
-		if(testmoveint==0 && piece_possible_moves[i]==whitek->getPosition()){
-			cout<< "adding to the threatening the white king list" <<endl;
+		if(testmoveint==0 && piece_possible_moves[i]==whitek->getPosition()&& \
+		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+		 positions_threatening_bking.end())&&piece->getPieceColour()==false ){
 			this->positions_threatening_wking.push_back(position);
 			// this->positions_threatening_wking.push_back(piece_possible_moves[i]);
 			/* this is incorrectly saying the position that is threatening the king, which is the position
@@ -566,6 +751,25 @@ bool Chessboard::Is_Check_Black(){
 	return incheck;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void Chessboard::Change_Turn(){
 	//change turn to other colour 1 if white, 0 if black
 	if(turn==false){
