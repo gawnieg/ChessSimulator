@@ -44,7 +44,9 @@ class Chessboard{
 	void Create_List_Board_Positions();//creates a generic list of chess board positions eg. A1, A2, A3 etc
 	bool Is_Check_White();//returns 1 if is in check false if not.
 	bool Is_Check_Black();//returns 1 if is in check false if not.
-
+	int Clear_Possible_Move_Lists(); // empties possible move lists for all pieces
+	int Check_Checkmate_White();
+	int Check_Checkmate_Black();
 
 
 	public:
