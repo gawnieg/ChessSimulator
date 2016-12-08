@@ -15,13 +15,13 @@ Chessboard::Chessboard(){
 	//creating pieces
 
 	whiter1 = new Rook("White's Rook", true, "A1", this);
-	whiter2 = new Rook("White's Rook", true, "E6", this);
+	whiter2 = new Rook("White's Rook", true, "H1", this);
 	blackr1 = new Rook("Black's Rook", false, "A8", this);
 	blackr2 = new Rook("Black's Rook", false, "H8", this);
 
-	whiteb1 = new Bishop("White's Bishop", true, "A1", this);
+	whiteb1 = new Bishop("White's Bishop", true, "C1", this);
 	whiteb2 = new Bishop("White's Bishop", true, "F1", this);
-	blackb1 = new Bishop("Black's Bishop", false, "C1", this); //was C*
+	blackb1 = new Bishop("Black's Bishop", false, "C8", this); //was C*
 	blackb2 = new Bishop("Black's Bishop", false, "F8", this);
 
 	whitek1 = new Knight("White's Knight", true, "B1", this);
@@ -29,7 +29,7 @@ Chessboard::Chessboard(){
 	blackk1 = new Knight("Black's Knight", false, "B8", this);
 	blackk2 = new Knight("Black's Knight", false, "G8", this);
 
-	whiteq = new Queen("White's Queen", true, "E7", this); //D1
+	whiteq = new Queen("White's Queen", true, "D1", this); //D1
 	blackq = new Queen("Black's Queen", false, "D8", this);
 
 	whitek = new King("White's King", true, "E1", this);
@@ -103,9 +103,7 @@ int Chessboard::submitMove(string position, string position_target){
 	/*this function is public and called from main
 	will check if the move is valid then with the chessboard and the game rules,
 	make the move, then update the activepieces,  */
-Piece* testpiece;
-//
-//
+
 // cout << "testing piece_possible_moves" <<endl;
 // cout << piece_possible_moves.size() << endl;
 //
@@ -146,17 +144,7 @@ Piece* testpiece;
 
 
 
-		PrintBoard();
-
-
-
-
-
-
-
-
-
-
+	PrintBoard();
 
 	int errorcode=0;
 	cout << "Chessboard::submitMove The position to be moved is " << position << endl;
@@ -202,9 +190,9 @@ Piece* testpiece;
 		cout << "Chessboard::submit :Target checked to be ok" <<endl;
 	}
 	if(errorcode !=0){
+		cout << "Target not ok : " << errorcode <<endl;
 		return errorcode;
 	}
-
 
 	// now see if move is plausible _PIECE SPECIFIC
 	int makemovevar=0; // true if the move is plausible in terms of what piece we are moving.
@@ -214,6 +202,8 @@ Piece* testpiece;
 		cout << "piece makemove says no" << endl;
 		return makemovevar;
 	}
+
+	piece->firstmove =0; // setting the pieces firstmove to zero here. cannot do inside pawn makemove as uses this for possibel move checking
 
 
 	//section to check if another piece is being taken as a result of this
@@ -288,18 +278,23 @@ Piece* testpiece;
 
 	/* THE ITEMS IN THE FOLLOWING SECTION SHOULD BE DONE LAST */
 
-	cerr << "printing before return to main" <<endl;
-	PrintBoard();
+	// cerr << "printing before return to main" <<endl;
+	// PrintBoard();
 	//then function to clear the possible move arrays
 	cerr << "clearing possible move lists for each piece "<< Clear_Possible_Move_Lists() << endl;
 	cout << "The current turn is " << turn << endl;
 	Change_Turn(); // changes the turn of the game from white to black and vice versa. SHould be done last.
 	cout << "The current turn is now " << turn << endl;
+
 	cout << "Error code in submitMove is " << errorcode << endl;
+	if(errorcode==0){
+		cout << "MOVE SUCCESSFULL MUTHAFUCKA" <<endl;
+	}
 	return errorcode;
 
 
 }//end of submit move
+
 
 int Chessboard::Check_Checkmate(bool colour){
 		//return 1 if checkmate
@@ -1130,5 +1125,16 @@ void Chessboard::PrintBoard(){ //do we need to pass "this"
 		" piece: " << (it->second)->getPieceName() << " "<<(it->second) << endl;
 
 	}
+
+}
+
+void Chessboard::resetBoard(){
+	//to reset chess board.
+	//1. delete all pieces
+
+
+	delete whiter1;
+
+
 
 }

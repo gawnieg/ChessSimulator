@@ -68,7 +68,7 @@ void Move_Piece(string currentposition, string updateposition);
 	int Check_If_Piece_Active(string pos);
 	map<string,Piece*> activepieces;
 	map<string, Piece*>::iterator activeit;
-
+	void resetBoard();
 };
 
 

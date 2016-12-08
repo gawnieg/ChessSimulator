@@ -36,6 +36,7 @@ bool Piece::getPieceColour(){//getter function
 
 string Piece::setPosition(string future){
 	position = future;
+return MOVE_VALID; //dummy return unused function
 
 }
 
@@ -305,13 +306,17 @@ return INVALID_BISHOP_MOVE;
 Pawn::Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Pawn constructor
-		firstmove=true;
+		// firstmove=true;
 	}
 
-int Piece::makemove(const string &position, const string &targetposition){
-return 0; //dummy return this should never be used!
-//intentionally blank
+// int Piece::makemove(const string &position, const string &targetposition){
+// return 0; //dummy return this should never be used!
+// //intentionally blank
+// }
+Piece::~Piece(){
+	//intentionally blank
 }
+
 
 
 Piece* Piece::GetPiecePtrGivenPos(string position){
@@ -349,7 +354,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 	*/
 	#ifdef COMMENTS_ON
 	cout << "Pawn version of makemove is called" << endl;
-	cout << "First move? " << firstmove <<endl;
+	cout << "First move? " << this->firstmove <<endl;
 	cout << "This pawns colour is " << this->getPieceColour() << endl;
 	cout << "This pawns name " << this-> getPieceName() << endl;
 
@@ -376,27 +381,71 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				cout << "move requested is ok! and not blocked,can move pawn forwards "<<\
 				position[1]-targetposition[1] << "spaces" <<endl;
 				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
-				return MOVE_VALID;
-			}
-		}
-		if(this->getPieceColour() ==1){//the piece to be moved is black
-			//gonna subtract from the number part to move down the board
-			if(((targetposition[1]-position[1] ==2 && position[0] == targetposition[0])\
-			||(targetposition[1]-position[1] ==1 && position[0] == targetposition[0]))\
-			&& Check_If_Blocked_Vertical(position, targetposition)==0){
-				#ifdef COMMENTS_ON
-				cout << "move requested is ok! can move pawn forwards "<<\
-				targetposition[1]-position[1] << " spaces" <<endl;
-				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
+				// this->firstmove=false; //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
 		}
 
+		if(this->getPieceColour() ==0){//the piece to be moved is black _DIAGONAL KILL
+			//gonna subtract from the number part to move down the board
+			if((position[1]-targetposition[1] ==1 && abs(targetposition[0]-position[0])==1)\
+			&& GetPiecePtrGivenPos(targetposition)!=NULL)
+			{
+				#ifdef COMMENTS_ON
+				cout << "move requested is ok! can move pawn forwards and take a piece "<<\
+				position[1]-targetposition[1] << " spaces" <<endl;
+				#endif
+				// this->firstmove=false; //set firstmove to false as its firstmove has been completed
+				return MOVE_VALID;
+			}
+		}
+
+
+
+		if(this->getPieceColour() ==1){//the piece to be moved is white
+			//gonna subtract from the number part to move down the board
+
+			if(((targetposition[1]-position[1] ==2 && position[0] == targetposition[0])\
+			||(targetposition[1]-position[1] ==1 && position[0] == targetposition[0]))\
+			&& Check_If_Blocked_Vertical(position, targetposition)==0){
+				#ifdef COMMENTS_ON
+				cout << "move requested is ok! can move pawn forwards  "<<\
+				targetposition[1]-position[1] << " spaces" <<endl;
+				#endif
+				// this->firstmove=false; //set firstmove to false as its firstmove has been completed
+				return MOVE_VALID;
+			}
+		}
+
+		if(this->getPieceColour() ==1){//the piece to be moved is white _DIAGONAL KILL
+			//gonna subtract from the number part to move down the board
+
+			if((targetposition[1]-position[1] ==1 && abs(position[0]-targetposition[0])==1)\
+			&& GetPiecePtrGivenPos(targetposition)!=NULL)
+			{
+				#ifdef COMMENTS_ON
+				cout << "move requested is ok! can move pawn forwards and take a piece "<<\
+				targetposition[1]-position[1] << " spaces" <<endl;
+				#endif
+				// this->firstmove=false; //set firstmove to false as its firstmove has been completed
+				return MOVE_VALID;
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
 	}
 	else{ //not first move, can only move one square
 		//piece to be moved it black and its one square straight
+
 		if(this->getPieceColour() ==0){//the piece to be moved is black
 			//gonna subtract from the number part to move down the board
 			if(position[1]-targetposition[1] ==1\
@@ -406,7 +455,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				cout << "move requested is ok! ,can move pawn forwards "<<\
 				position[1]-targetposition[1] << "spaces" <<endl;
 				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
+				// this->firstmove=false;  //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
 		}
@@ -414,13 +463,13 @@ int Pawn::makemove(const string &position, const string &targetposition){
 		if(this->getPieceColour() ==0){//the piece to be moved is black. checking if blocked not
 			//required as will be taking a piece if moving diagonnally
 			//gonna subtract from the number part to move down the board
-			if((position[0]-targetposition[0] ==1 && position[1]-targetposition[1] ==1 \
+			if((abs(position[0]-targetposition[0]) ==1 && abs(position[1]-targetposition[1]) ==1 \
 				&& GetPiecePtrGivenPos(targetposition)!=NULL)){
 					#ifdef COMMENTS_ON
 				cout << "move requested is ok! ,can move pawn diagonally for the kill "<<\
 				position[0]-targetposition[0] << "spaces" <<endl;
 				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
+				// this->firstmove=false; //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
 		}
@@ -435,7 +484,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				cout << "move requested is ok! can move pawn forwards "<<\
 				targetposition[1]-position[1] << " spaces" <<endl;
 				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
+				// this->firstmove=false;  //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
 		}
@@ -447,7 +496,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				cout << "move requested is ok! ,can move pawn diagonally for the kill "<<\
 				targetposition[0]-position[0] << "spaces" <<endl;
 				#endif
-				firstmove=false; //set firstmove to false as its firstmove has been completed
+				// this->firstmove=false;  //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
 		}

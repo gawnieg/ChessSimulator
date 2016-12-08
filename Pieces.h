@@ -29,9 +29,13 @@ Piece(bool _colour, string _name, string _position, Chessboard* chessboardptr);
 string getPieceName();
 string getPosition();
 bool getPieceColour();
-virtual int makemove(const string &position, const string &targetposition);
+virtual int makemove(const string &position, const string &targetposition)=0;
 vector<string> actual_possible_moves;
 string setPosition(string future);
+bool firstmove =1;
+virtual ~Piece();
+
+
 
 
 };//end of piece definition
@@ -40,13 +44,13 @@ string setPosition(string future);
 class Queen:public Piece{
 	public:
 	Queen(string _name,bool _colour, string _position, Chessboard* chessboardptr);
-	virtual int makemove(const string &position, const string &targetposition);
+	 int makemove(const string &position, const string &targetposition);
 
 };
 class Rook:public Piece{
 	public:
 	Rook(string _name,bool _colour, string _position, Chessboard* chessboardptr);
-	virtual int makemove(const string &position, const string &targetposition);
+	 int makemove(const string &position, const string &targetposition);
 
 };
 class Bishop:public Piece{
@@ -59,23 +63,24 @@ class Bishop:public Piece{
 class King:public Piece{
 	public:
 	King( string _name,bool _colour, string _position, Chessboard* chessboardptr);
-	virtual int makemove( const string &position, const string &targetposition);
+	 int makemove( const string &position, const string &targetposition);
 	//virtual bool makemove(string position, string targetposition);
 };
 class Pawn:public Piece{
 	public:
 	Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr);
-	virtual int makemove(const string &position, const string &targetposition);
+	 int makemove(const string &position, const string &targetposition);
+
 
     private:
-    bool firstmove; //true if first move, false if not
+// bool firstmove; //true if first move, false if not
 int Check_If_Blocked_Vertical(const string &position, const string &targetposition); //checks if something is blocking vertically in a straight line
 
 };
 class Knight:public Piece{
 	public:
 	Knight(string _name,bool _colour, string _position, Chessboard* chessboardptr);
-	virtual int makemove(const string &position, const string &targetposition);
+	 int makemove(const string &position, const string &targetposition);
 };
 
 
