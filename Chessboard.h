@@ -51,13 +51,16 @@ class Chessboard{
 	bool Is_Check_Black();//returns 1 if is in check false if not.
 	int Clear_Possible_Move_Lists(); // empties possible move lists for all pieces
 	int Check_Checkmate(bool colour);
+	int Check_Stalemate(bool colour);
 
-bool Is_Check_2(bool colour);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
-int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
+	bool Is_Check_2(bool colour);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
+	int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
 
-string Where_is_the_king(bool colour);//might delete??
+	string Where_is_the_king(bool colour);//might delete??
 
-void Move_Piece(string currentposition, string updateposition);
+
+	void SetupBoard();
+	void Clear_Board();
 
 	public:
 	Chessboard();
