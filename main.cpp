@@ -25,6 +25,22 @@ Chessboard cb;
 
      cb.submitMove("C2", "C4");
 
+
+      cout << "===========================" << endl;
+      cout << "Second Move" << endl;
+      cout << "===========================" << endl;
+      cout << endl;
+
+     cb.submitMove("F8", "E7");
+
+     cout << "===========================" << endl;
+     cout << "Third Move" << endl;
+     cout << "===========================" << endl;
+     cout << endl;
+
+ cb.submitMove("C4", "C5");
+
+
 cout << "End of main" << endl;
      cout << endl;
      return 0;
