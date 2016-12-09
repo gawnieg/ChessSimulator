@@ -95,21 +95,21 @@ int King::makemove(const string &position, const string &targetposition){
 	if(((abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]))\
 	&&abs(targetposition[1]-position[1])==1)\
 	&&Check_If_Blocked_Diag(position,targetposition)==0){
-		cout <<"diagonal move deemed valid" <<endl;
+		// cout <<"diagonal move deemed valid" <<endl;
 		return MOVE_VALID;
 	}
 	//vertical movement
 	if(((position[1]-targetposition[1] ==1 || targetposition[1]-position[1] ==1)\
 	&& position[0] == targetposition[0])\
 	&& Check_If_Blocked_Vertical(position, targetposition)==0){
-		cout <<"vertical move deemed valid" <<endl;
+		// cout <<"vertical move deemed valid" <<endl;
 		return MOVE_VALID;
 	}
 	//horizontal movement
 	if(((position[0] -targetposition[0]==1 ||targetposition[0]-position[0]==1)\
 	&&position[1]==targetposition[1])&& \
 	Check_If_Blocked_Horizontal(position, targetposition)==0){
-		cout <<"horizontal move deemed valid" <<endl;
+		// cout <<"horizontal move deemed valid" <<endl;
 		 return MOVE_VALID;
 	}
 

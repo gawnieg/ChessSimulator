@@ -187,47 +187,81 @@ int Chessboard::submitMove(string position, string position_target){
 		cout << "In Check White? " << incheckwhite << endl;
 	}
 
-	cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
-	cout << endl;
-	cout << "checking for stalemate"<< endl;
-	cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+
 
 	//STALEMATE SECTION
-	if(incheckblack==false){
+	if(incheckblack==false && turn == 0){
+		cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+		cout << endl;
+		cout << "checking for stalemate"<< endl;
+		cout << endl;
+		cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+
+
+
 		errorcode= Check_Stalemate(false);
 		cout << "Stalemate checking for black leads to " << errorcode <<endl;
 
 	}
-	if(incheckwhite==false){
+	if(incheckwhite==false && turn == 1){
+
+		cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+		cout << endl;
+		cout << "checking for stalemate"<< endl;
+		cout << endl;
+		cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+
+
 		errorcode= Check_Stalemate(true);
 		cout << "Stalemate checking for white leads to " << errorcode <<endl;
 	}
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-	cout << endl;
-	cout << "checking for checkmate"<< endl;
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+
 
 	//end of stalemate section
 
 
 	if(incheckblack==true){//then check checkmate black
+		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+		cout << endl;
+		cout << "checking for checkmate"<< endl;
+		cout << endl;
+		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 		errorcode= Check_Checkmate(true);
 		//cout << "Check_Checkmate_Black is" << errorcode <<endl;
 	}
+	if(errorcode == CHECKMATE){
+		cout<< piece->getPieceName() << " moves from " << position<< " to "\
+		 << position_target<<endl;
+		cout << "Checkmate Black! White wins!" <<endl;
+		return errorcode;
+	}
 	if(incheckwhite==true){ //then check checkmate white
+		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+		cout << endl;
+		cout << "checking for checkmate"<< endl;
+		cout << endl;
+		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 		errorcode= Check_Checkmate(false);
 		//cout << "Check_Checkmate_White is" << errorcode <<endl;
+	}
+	if(errorcode == CHECKMATE){
+		cout<< piece->getPieceName() << " moves from " << position<< " to "\
+		 << position_target<<endl;
+		cout << "Checkmate White! Black wins!" <<endl;
+		return errorcode;
 	}
 
 	/* THE ITEMS IN THE FOLLOWING SECTION SHOULD BE DONE LAST */
 
 	Clear_Possible_Move_Lists();
 	Change_Turn(); // changes the turn of the game from white to black and vice versa. SHould be done last.
-
+	PrintBoard();
 	cout << "Error code in submitMove is " << errorcode << endl;
 	if(errorcode==0){
-		// cout << "MOVE SUCCESSFULL !!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
+		cout << "MOVE SUCCESSFULL !!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
 		cout<< piece->getPieceName() << " moves from " << position<< " to " << position_target<<endl;
+		cout << endl;
+		cout << endl;
 	}
 	return errorcode;
 
@@ -269,13 +303,13 @@ int Chessboard::Make_Temp_Move(string targetposition, Piece* piece, bool colour,
 	//section to move piece to position_target on board and update activepieces list
 	#ifdef COMMENTS_ON_CHECK
 	cout << "b. Inserting" << piece << " aka " << \
-	piece->getPieceName()<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
+	piece->getPieceName()<< " @ "<<targetposition<<endl;
 	#endif
 
 	activepieces.insert(pair<string, Piece*>(targetposition, piece));
 
 	#ifdef COMMENTS_ON_CHECK
-	cout << "c. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
+	cout << "c. Deleting" << piece<< " @ " << tempposition << endl;
 	#endif
 
 	Delete_Piece(tempposition);
@@ -327,7 +361,7 @@ int Chessboard::Make_Temp_Move(string targetposition, Piece* piece, bool colour,
 
 	if(stillcheckblack==0){//this move can be made to get rid of the check therefore checkmate is not occuring
 		//break from loop
-		cout << "A move exists that will not result in stalemate" << endl;
+		cout << "A move exists that will not result in stalemate/checkmate" << endl;
 		cout << "It is " << piece->getPieceName() << " @ " << piece->getPosition() << " to "\
 		<< targetposition << endl;
 		//undo moves and return false to calling submitMove. is not in checkmate
@@ -526,7 +560,7 @@ bool Chessboard::Is_Check_2(bool colour){
 		cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 		cout << "Checking " << piece_possible_moves[i] <<endl;
 		#endif
-		Check_All_Possible_Moves2(piece_possible_moves[i]);
+		Check_All_Possible_Moves(piece_possible_moves[i],0);
 	}
 
 
@@ -561,101 +595,101 @@ bool Chessboard::Is_Check_2(bool colour){
 }
 
 
-int Chessboard::Check_All_Possible_Moves2(string position){
-	// this function is version 2 as dont want it to add to the list of actual_possible_moves - is for checkmate checking
-
-	Piece* piece;
-
-	//checking if piece at requested move position exists!
-	activeit = activepieces.find(position);
-	if(activeit != activepieces.end() ){
-		piece = activeit->second;
-		#ifdef POSSIBLE_MOVES_PRINT
-		cout << "Chessboard::Check_All_Possible_Moves:" <<endl <<" There is a " <<\
-		 (activeit->second)->getPieceName() \
-		<< " at this position " << position << endl;
-		cout <<endl;
-		#endif
-
-	}
-	else{
-		#ifdef COMMENTS_ON
-		cout<< "No piece at position specified " << endl;
-		#endif
-		return NO_PIECE_AT_REQUESTED_MOVE_CHECK;
-	}
-
-
-
-
-	//cout<< "The size of vector element is " << piece_possible_moves.size()<< endl;
-	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
-		#ifdef COMMENTS_ON
-		cout << endl;
-		cout << "Checking element "<< i << " which is " << (piece_possible_moves[i]) << " for possible move" <<endl;
-		#endif
-		int testmoveint =0;
-		//if the position to be checked is the position that it cucrently is then skip
-		if(piece_possible_moves[i] == position){
-			continue;
-		}
-
-
-		//checking if the target is valid, in terms of range and colour in target position
-		testmoveint = this->Check_Move_Target_Valid(position, (piece_possible_moves[i]));
-		#ifdef COMMENTS_ON
-		cout <<"testmoveint after Check_Move_Target_Valid is " << testmoveint <<endl;
-		#endif
-		if( testmoveint!=0){
-			#ifdef COMMENTS_ON
-			cout << "Check_All_Possible_Moves Check_Move_Target_Valid says no" << endl;
-			#endif
-			continue;
-		}
-		//checking if the piece is allowed to make this move
-		testmoveint = piece->makemove(position, (piece_possible_moves[i]));
-		//cout << "printing testmoveint after makemove testing " << testmoveint<<endl;
-		if( testmoveint!=0){
-			#ifdef COMMENTS_ON
-			cout << "Check_All_Possible_Moves piece makemove says no" << endl;
-			#endif
-		}
-
-
-
-		//checking if the move brings the black king in check
-		//adding threatening move to list for threatening black
-		if(testmoveint==0 && piece_possible_moves[i]== Where_is_the_king(false)&& \
-		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
-		 positions_threatening_bking.end()) &&piece->getPieceColour()==true){
-			this->positions_threatening_bking.push_back(position);
-		}
-
-		//then for white king
-		if(testmoveint==0 && piece_possible_moves[i]== Where_is_the_king(true)&& \
-		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
-		 positions_threatening_bking.end())&&piece->getPieceColour()==false ){
-			this->positions_threatening_wking.push_back(position);
-		}
-	}
-
-
-	//possible moves vector
-	#ifdef POSSIBLE_MOVES_PRINT
-	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
-	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
-		cout << piece->actual_possible_moves[i]  << " ";
-	}
-	cout <<"]" <<endl;
-	#endif
-
-	return MOVE_VALID;
-}
-
-
+// int Chessboard::Check_All_Possible_Moves2(string position){
+// 	// this function is version 2 as dont want it to add to the list of actual_possible_moves - is for checkmate checking
+//
+// 	Piece* piece;
+//
+// 	//checking if piece at requested move position exists!
+// 	activeit = activepieces.find(position);
+// 	if(activeit != activepieces.end() ){
+// 		piece = activeit->second;
+// 		#ifdef POSSIBLE_MOVES_PRINT
+// 		cout << "Chessboard::Check_All_Possible_Moves:" <<endl <<" There is a " <<\
+// 		 (activeit->second)->getPieceName() \
+// 		<< " at this position " << position << endl;
+// 		cout <<endl;
+// 		#endif
+//
+// 	}
+// 	else{
+// 		#ifdef COMMENTS_ON
+// 		cout<< "No piece at position specified " << endl;
+// 		#endif
+// 		return NO_PIECE_AT_REQUESTED_MOVE_CHECK;
+// 	}
+//
+//
+//
+//
+// 	//cout<< "The size of vector element is " << piece_possible_moves.size()<< endl;
+// 	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
+// 		#ifdef COMMENTS_ON
+// 		cout << endl;
+// 		cout << "Checking element "<< i << " which is " << (piece_possible_moves[i]) << " for possible move" <<endl;
+// 		#endif
+// 		int testmoveint =0;
+// 		//if the position to be checked is the position that it cucrently is then skip
+// 		if(piece_possible_moves[i] == position){
+// 			continue;
+// 		}
+//
+//
+// 		//checking if the target is valid, in terms of range and colour in target position
+// 		testmoveint = this->Check_Move_Target_Valid(position, (piece_possible_moves[i]));
+// 		#ifdef COMMENTS_ON
+// 		cout <<"testmoveint after Check_Move_Target_Valid is " << testmoveint <<endl;
+// 		#endif
+// 		if( testmoveint!=0){
+// 			#ifdef COMMENTS_ON
+// 			cout << "Check_All_Possible_Moves Check_Move_Target_Valid says no" << endl;
+// 			#endif
+// 			continue;
+// 		}
+// 		//checking if the piece is allowed to make this move
+// 		testmoveint = piece->makemove(position, (piece_possible_moves[i]));
+// 		//cout << "printing testmoveint after makemove testing " << testmoveint<<endl;
+// 		if( testmoveint!=0){
+// 			#ifdef COMMENTS_ON
+// 			cout << "Check_All_Possible_Moves piece makemove says no" << endl;
+// 			#endif
+// 		}
+//
+//
+//
+// 		//checking if the move brings the black king in check
+// 		//adding threatening move to list for threatening black
+// 		if(testmoveint==0 && piece_possible_moves[i]== Where_is_the_king(false)&& \
+// 		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+// 		 positions_threatening_bking.end()) &&piece->getPieceColour()==true){
+// 			this->positions_threatening_bking.push_back(position);
+// 		}
+//
+// 		//then for white king
+// 		if(testmoveint==0 && piece_possible_moves[i]== Where_is_the_king(true)&& \
+// 		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
+// 		 positions_threatening_bking.end())&&piece->getPieceColour()==false ){
+// 			this->positions_threatening_wking.push_back(position);
+// 		}
+// 	}
+//
+//
+// 	//possible moves vector
+// 	#ifdef POSSIBLE_MOVES_PRINT
+// 	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
+// 	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
+// 		cout << piece->actual_possible_moves[i]  << " ";
+// 	}
+// 	cout <<"]" <<endl;
+// 	#endif
+//
+// 	return MOVE_VALID;
+// }
 
 
-int Chessboard::Check_All_Possible_Moves(string position){
+
+
+int Chessboard::Check_All_Possible_Moves(string position, bool firstround){
 
 	Piece* piece;
 	#ifdef COMMENTS_ON
@@ -716,11 +750,14 @@ int Chessboard::Check_All_Possible_Moves(string position){
 			#endif
 		}
 		// if there is no problem with the move then add it to the possible moves vector
-		if(testmoveint==0){
-			#ifdef COMMENTS_ON
-			cout << "adding "<< piece_possible_moves[i]<<" to actual_possible_moves " <<endl;
-			#endif
-			piece->actual_possible_moves.push_back(piece_possible_moves[i]);
+
+		if(firstround == 1){
+			if(testmoveint==0){
+				#ifdef COMMENTS_ON
+				cout << "adding "<< piece_possible_moves[i]<<" to actual_possible_moves " <<endl;
+				#endif
+				piece->actual_possible_moves.push_back(piece_possible_moves[i]);
+			}
 		}
 
 
@@ -767,7 +804,7 @@ bool Chessboard::Is_Check_White(){
 	bool incheck=0; //1 if incheck
 	cout<< "The white king is at" << Where_is_the_king(true)<< endl;
 	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
-		Check_All_Possible_Moves(piece_possible_moves[i]);
+		Check_All_Possible_Moves(piece_possible_moves[i],1);
 	}
 	cout << "Printing positions_threatening_wking" << endl;
 	for(unsigned int i=0; i < positions_threatening_wking.size(); i++){
@@ -789,7 +826,7 @@ bool Chessboard::Is_Check_Black(){
 	//checking where the kings are at
 	cout<< "The black king is at" << Where_is_the_king(false)<< endl;
 	for(unsigned int i =0; i < piece_possible_moves.size(); i++){
-		Check_All_Possible_Moves(piece_possible_moves[i]);
+		Check_All_Possible_Moves(piece_possible_moves[i],1);
 	}
 	//printing positions_threatening_bking
 	cout << "Printing positions_threatening_bking" << endl;
@@ -822,6 +859,7 @@ void Chessboard::Delete_Piece(string position){
 	activeit = activepieces.find(position);
 	if(activeit != activepieces.end() ){
 		activepieces.erase(activeit);
+
 		#ifdef COMMENTS_ON
 		cout << position << "deleted" << endl;
 		#endif

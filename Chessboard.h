@@ -42,7 +42,7 @@ class Chessboard{
 	int Check_Move_Target_Valid(string position, string targetposition);
 	void Update_Active_Pieces(string position, string position_target, Piece* piece);
 	void TakeTargetPiece(string position_target);
-	int Check_All_Possible_Moves(string position); // checks all possible moves for a piece in a position
+	int Check_All_Possible_Moves(string position, bool first); // checks all possible moves for a piece in a position
 	bool Check_If_Correct_Turn(bool colourtocheck);
 	void Change_Turn();//called at end of submit move to update turn
 	int Check_Same_Colour(string position); //checks if the position passed is the same as turn
