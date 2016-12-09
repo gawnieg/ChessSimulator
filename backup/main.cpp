@@ -10,7 +10,6 @@
 
 Chessboard cb;
 
-cb.submitMove("G2", "G5");//move for stalemate play
 
 /*
      cout << "===========================" << endl;
@@ -21,7 +20,7 @@ cb.submitMove("G2", "G5");//move for stalemate play
 //
 //      cout << endl;
 //
-
+     cb.submitMove("C2", "C4");
 //
 //
 //       cout << "===========================" << endl;
@@ -44,6 +43,19 @@ cb.submitMove("G2", "G5");//move for stalemate play
 //      return 0;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
      //
     //  cb.submitMove("D4", "H6");
     //  cout << endl;
@@ -57,104 +69,8 @@ cb.submitMove("G2", "G5");//move for stalemate play
 */
 
 
-//////////////////////////////////////////STALEMATE PLAY???????????????????????????
-/*
-cb.submitMove("E2", "E3");
-
-    cout << endl;
-
-    cb.submitMove("A7", "A5");
-
-    cout << endl;
-
-    cb.submitMove("D1", "H5");
-
-    cout << endl;
-
-    cb.submitMove("A8", "A6");
-
-    cout << endl;
-
-    cb.submitMove("H5", "A5");
-
-    cout << endl;
-
-    cb.submitMove("H7", "H5");
-
-    cout << endl;
-
-    cb.submitMove("H2", "H4");
-
-    cout << endl;
-
-    cb.submitMove("A6", "H6");
-
-    cout << endl;
-
-    cb.submitMove("A5", "C7");
-
-    cout << endl;
-
-    cb.submitMove("F7", "F6");
-
-    cout << endl;
-
-    cb.submitMove("C7", "D7");
-
-    cout << endl;
-
-    cb.submitMove("E8", "F7");
-
-    cout << endl;
-
-    cb.submitMove("D7", "B7");
-
-    cout << endl;
-
-    cb.submitMove("D8", "D3");
-
-    cout << endl;
-
-    cb.submitMove("B7", "B8");
-
-    cout << endl;
-
-    cb.submitMove("D3", "H7");
-
-    cout << endl;
-
-    cb.submitMove("B8", "C8");
-
-    cout << endl;
-
-    cb.submitMove("F7", "G6");
-
-    cout << endl;
-
-    cb.submitMove("C8", "E6");
-
-    cout << endl;
-
-    cb.submitMove("D7", "F6");
-
-    cout << endl;
-
-*/
-
-////////////////////////////////////END OF STALEMATE PLAy////////////////////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-/*
     cout << "===========================" << endl;
     cout << "Alekhine vs. Vasic (1931)" << endl;
     cout << "===========================" << endl;
@@ -283,6 +199,6 @@ cb.submitMove("E2", "E3");
     cout << endl;
 
 
-*/
+
 
  }

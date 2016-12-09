@@ -52,7 +52,8 @@ class Chessboard{
 	int Clear_Possible_Move_Lists(); // empties possible move lists for all pieces
 	int Check_Checkmate(bool colour);
 	int Check_Stalemate(bool colour);
-	int Make_Temp_Move(string targetposition,Piece* piece,bool colour,string tempposition,Piece* temppiece);
+	int Temp_Make_Move(string position, string targetposition, Piece* piece, Piece* temppiece, bool colour);
+
 	bool Is_Check_2(bool colour);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
 	int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
 

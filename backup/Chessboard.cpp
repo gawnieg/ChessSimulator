@@ -10,7 +10,6 @@ using namespace std;
 // #define COMMENTS_ON
 // #define COMMENTS_ON_CHECK
 // #define PRINTING
-// #define POSSIBLE_MOVES_PRINT
 
 Chessboard::Chessboard(){
 	//chessboard constructor
@@ -36,32 +35,32 @@ void Chessboard::SetupBoard(){
 	blackk1 = new Knight("Black's Knight", false, "B8", this);
 	blackk2 = new Knight("Black's Knight", false, "G8", this);
 
-	whiteq = new Queen("White's Queen", true, "D1", this); //D1 checking stalemate G1 then submit move to G6
+	whiteq = new Queen("White's Queen", true, "D1", this); //D1
 	blackq = new Queen("Black's Queen", false, "D8", this);
 
-	whitek = new King("White's King", true, "E1", this);//std E1 checking statemate wiki F7
-	blackk = new King("Black's King", false, "E8", this);//std E8, stalemate play H8
+	whitek = new King("White's King", true, "E1", this);//e1
+	blackk = new King("Black's King", false, "E8", this);
 
-	whitep1 = new Pawn("White's Pawn", true, "A2", this);
-	whitep2 = new Pawn("White's Pawn", true, "B2", this);
-	whitep3 = new Pawn("White's Pawn", true, "C2", this);//should be C2
-	whitep4 = new Pawn("White's Pawn", true, "D2", this);
-	whitep5 = new Pawn("White's Pawn", true, "E2", this);
-	whitep6 = new Pawn("White's Pawn", true, "F2", this);
-	whitep7 = new Pawn("White's Pawn", true, "G2", this);
-	whitep8 = new Pawn("White's Pawn", true, "H2", this);
+	whitep1 = new Pawn("White's Pawn stA2", true, "A2", this);
+	whitep2 = new Pawn("White's PawnstB2", true, "B2", this);
+	whitep3 = new Pawn("White's Pawn stC2", true, "C2", this);//should be C2
+	whitep4 = new Pawn("White's Pawn stD2", true, "D2", this);
+	whitep5 = new Pawn("White's Pawn stE2", true, "E2", this);
+	whitep6 = new Pawn("White's Pawn stF2", true, "F2", this);
+	whitep7 = new Pawn("White's Pawn stG2", true, "G2", this);
+	whitep8 = new Pawn("White's Pawn stH2", true, "H2", this);
 	// //
-	blackp1 = new Pawn("Black's Pawn", false, "A7", this);
-	blackp2 = new Pawn("Black's Pawn", false, "B7", this);
-	blackp3 = new Pawn("Black's Pawn", false, "C7", this); //this one
-	blackp4 = new Pawn("Black's Pawn", false, "D7", this);
-	blackp5 = new Pawn("Black's Pawn", false, "E7", this);
-	blackp6 = new Pawn("Black's Pawn", false, "F7", this);
-	blackp7 = new Pawn("Black's Pawn", false, "G7", this); //this one
-	blackp8 = new Pawn("Black's Pawn", false, "H7", this);
+	blackp1 = new Pawn("Black's Pawn stA7", false, "A7", this);
+	blackp2 = new Pawn("Black's Pawn stB7", false, "B7", this);
+	blackp3 = new Pawn("Black's Pawn stC7", false, "C7", this); //this one
+	blackp4 = new Pawn("Black's Pawn stD7", false, "D7", this);
+	blackp5 = new Pawn("Black's Pawn stE7", false, "E7", this);
+	blackp6 = new Pawn("Black's Pawn stF7", false, "F7", this);
+	blackp7 = new Pawn("Black's Pawn stG7", false, "G7", this); //this one
+	blackp8 = new Pawn("Black's Pawn stH7", false, "H7", this);
 
 	/*Printing board after construction*/
-	// PrintBoard();
+	PrintBoard();
 	//intialise first turn to white
 	turn = 1;
 	Create_List_Board_Positions();
@@ -109,35 +108,25 @@ int Chessboard::submitMove(string position, string position_target){
 		piece = activeit->second;
 	}
 	if(activeit == activepieces.end()){
-		cout << "No piece at position " << position << endl;
 		return NO_PIECE_AT_REQUESTED_MOVE;
 	}
 
 	/*checking if it is the correct pieces turn.
  	checking if the function returns truue, not colour
 	*/
-	string incorrectcolour="white's";
-	if(turn == true){
-		incorrectcolour="black's";
-	}
 	if(Check_If_Correct_Turn((activeit->second)->getPieceColour())==1){
 		//cout << "The correct colour is being moved" <<endl;
 	}
 	if(Check_If_Correct_Turn((activeit->second)->getPieceColour())==0){
-		cout << "It is not "   << incorrectcolour<<" turn to move. "<<endl;
+		//cout << "The incorrect colour is being moved" <<endl;
 		return INCORRECT_COLOUR_MOVE;
 	}
 
 
 	//error check for position
 	errorcode=Check_Move_Valid(position, piece);
-	if(errorcode ==POSITION_REQUESTED_OUT_OF_RANGE){
-		cout << "Move requested outside of board!"<< endl;
-		return POSITION_REQUESTED_OUT_OF_RANGE;
-	}
-	if(errorcode==NO_PIECE_AT_REQUESTED_MOVE_USER){
-		cout << "No piece at position " << position << endl;
-		return NO_PIECE_AT_REQUESTED_MOVE_USER;
+	if(errorcode !=0){
+		return errorcode;
 	}
 
 	//now get info about target position - range check it etc.
@@ -153,18 +142,21 @@ int Chessboard::submitMove(string position, string position_target){
 	int makemovevar=0; // true if the move is plausible in terms of what piece we are moving.
 	makemovevar=piece->makemove(position, position_target);
 	if(makemovevar!=0){ //if the move is
-		cout << piece->getPieceName() << " cannot move to " << position_target<<endl;
 		return makemovevar;
 	}
 
 	piece->firstmove =0; // setting the pieces firstmove to zero here. cannot do inside pawn makemove as uses this for possibel move checking
 
+
+	//section to check if another piece is being taken as a result of this
+	//check the destination position.
 	bool targetexists =false; //true if there is a target piece
 
 	activeit = activepieces.find(position_target);//do we need to reset the iterator to beginning first
 	if(activeit != activepieces.end() ){
 		targetexists=true;
 	}
+
 	if(targetexists==true){ // if there is a piece in the target position then call function to delete it
 		TakeTargetPiece(position_target); // deleting target piece
 	}
@@ -179,35 +171,26 @@ int Chessboard::submitMove(string position, string position_target){
 	if(turn == 1){ // white so check Is_Check_Black
 
 		incheckblack=Is_Check_Black();
-		cout << "In Check Black? " << incheckblack << endl;
+		//cout << "In Check Black? " << incheckblack << endl;
 	}
 	if(turn==0){
 
 		incheckwhite=Is_Check_White();
-		cout << "In Check White? " << incheckwhite << endl;
+		//cout << "In Check White? " << incheckwhite << endl;
 	}
 
-	cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
-	cout << endl;
-	cout << "checking for stalemate"<< endl;
-	cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
-
-	//STALEMATE SECTION
+	//CHECKMATE SECTION
 	if(incheckblack==false){
 		errorcode= Check_Stalemate(false);
-		cout << "Stalemate checking for black leads to " << errorcode <<endl;
-
+		//cout << "Stalemate checking for black leads to " << errorcode <<endl;
 	}
 	if(incheckwhite==false){
 		errorcode= Check_Stalemate(true);
-		cout << "Stalemate checking for white leads to " << errorcode <<endl;
+		//cout << "Stalemate checking for white leads to " << errorcode <<endl;
 	}
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-	cout << endl;
-	cout << "checking for checkmate"<< endl;
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 
-	//end of stalemate section
+
+	//end of checkmate section
 
 
 	if(incheckblack==true){//then check checkmate black
@@ -226,128 +209,12 @@ int Chessboard::submitMove(string position, string position_target){
 
 	cout << "Error code in submitMove is " << errorcode << endl;
 	if(errorcode==0){
-		// cout << "MOVE SUCCESSFULL !!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
-		cout<< piece->getPieceName() << " moves from " << position<< " to " << position_target<<endl;
+		cout << "MOVE SUCCESSFULL MUTHAFUCKA" <<endl;
 	}
 	return errorcode;
 
 
 }//end of submit move
-
-int Chessboard::Make_Temp_Move(string targetposition, Piece* piece, bool colour, string tempposition, Piece* temppiece){
-
-	Piece* temptargetpiece;
-
-	#ifdef COMMENTS_ON_CHECK
-	cout << "*****************************************************************"<<endl;
-	#endif
-
-
-	#ifdef COMMENTS_ON_CHECK
-	cout << "Moving " << piece->getPieceName() << " from "\
-	 << piece->getPosition() <<" to " << targetposition\
-	<<" to see if  check still occurs" << endl;
-	#endif
-
-	//now make the move
-	bool targetexists =false; //true if there is a target piece
-
-	activeit = activepieces.find(targetposition);//do we need to reset the iterator to beginning first
-	if(activeit != activepieces.end() ){
-		#ifdef COMMENTS_ON_CHECK
-		cout << "There is a " << (activeit->second)->getPieceName() \
-		<< "at this target position " << targetposition << endl;
-		#endif
-		temptargetpiece=(activeit->second);
-		targetexists=true;
-	}
-	if(targetexists==true){ // if there is a piece in the target position then call function to delete it
-		cout << "a. Deleting " << temptargetpiece << " from " << targetposition <<endl;
-		TakeTargetPiece(targetposition); // deleting target piece
-	}
-
-	//section to move piece to position_target on board and update activepieces list
-	#ifdef COMMENTS_ON_CHECK
-	cout << "b. Inserting" << piece << " aka " << \
-	piece->getPieceName()<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
-	#endif
-
-	activepieces.insert(pair<string, Piece*>(targetposition, piece));
-
-	#ifdef COMMENTS_ON_CHECK
-	cout << "c. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
-	#endif
-
-	Delete_Piece(tempposition);
-	//prrinting the board for debugging
-	#ifdef COMMENTS_ON_CHECK
-	PrintBoard();
-	#endif
-
-	//now check if check is still occuring.
-	#ifdef COMMENTS_ON_CHECK
-	cout << "Now checking if this move is allowed occuring by calling Is_Check2" <<endl;
-	#endif
-	int stillcheckblack=0;
-	stillcheckblack=Is_Check_2(colour); // true check checkmate black as white is just after moving
-
-
-	#ifdef COMMENTS_ON_CHECK
-	cout << "Is_Check_2 returns " << stillcheckblack<< endl;
-	#endif
-
-
-	if(stillcheckblack==1){ //still in check so undo move and try next
-		#ifdef COMMENTS_ON_CHECK
-		cout << "Undo-ing move as this move is not legal as would cause check" <<endl;
-		//undo new piece move
-		cout << "d. Deleting  "<< piece << "from " << targetposition<< endl;
-		#endif
-		Delete_Piece(targetposition);
-		//inserting piece in original position
-		#ifdef COMMENTS_ON_CHECK
-		cout << "e. ReInserting old " << temppiece << " @ " << tempposition<< endl;
-		#endif
-		activepieces.insert(pair<string, Piece*>(tempposition, temppiece));
-
-		if(targetexists==true){
-			// reinserting deleted target piece
-			#ifdef COMMENTS_ON_CHECK
-			cout << "f. Reinserting targetposition " << temptargetpiece << " @ " << targetposition << endl;
-			#endif
-			activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
-
-		}
-		#ifdef COMMENTS_ON_CHECK
-		cout << "g. Printing at end of reshuffle" << endl;
-		PrintBoard();
-		#endif
-		return TEMP_MOVE_DIDNT_WORK_OUT;
-	}
-
-	if(stillcheckblack==0){//this move can be made to get rid of the check therefore checkmate is not occuring
-		//break from loop
-		cout << "A move exists that will not result in stalemate" << endl;
-		cout << "It is " << piece->getPieceName() << " @ " << piece->getPosition() << " to "\
-		<< targetposition << endl;
-		//undo moves and return false to calling submitMove. is not in checkmate
-		Delete_Piece(targetposition);
-		//inserting piece in original position
-		activepieces.insert(pair<string, Piece*>(tempposition, temppiece));
-		if(targetexists==true){
-			// inserting deleted target piece
-			activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
-		}
-		#ifdef COMMENTS_ON_CHECK
-		PrintBoard();
-		#endif
-
-		return 0; // no checkmate
-	}
-
-return TEMP_MOVE_DIDNT_WORK_OUT;//should not reach
-
-}//end of Temp_Make_Move
 
 
 
@@ -357,9 +224,7 @@ int Chessboard::Check_Stalemate(bool colour){
 
 	Piece* piece;
 	Piece* temppiece;
-	//Piece* temptargetpiece;
-	string tempposition;
-	int tempreturn=0;
+	Piece* temptargetpiece;
 	//cout << "In stalemate function" <<endl;
 	if (colour==true){
 		cout << "checking stalemate for black" << endl;
@@ -371,27 +236,123 @@ int Chessboard::Check_Stalemate(bool colour){
 
 	for(unsigned int i =0; i< piece_possible_moves.size(); i++){
 		activeit = activepieces.find(piece_possible_moves[i]);
-		tempposition=piece_possible_moves[i];
 		if(activeit != activepieces.end() ){
 			piece = activeit->second;
 			temppiece=piece;
 			for(unsigned int k =0; k< piece->actual_possible_moves.size(); k++){
-
+				#ifdef COMMENTS_ON_CHECK
+				cout << "*****************************************************************"<<endl;
+				#endif
 				// //check colour of piece
 				if(piece->getPieceColour()==colour){
 					continue;//if the move is that of the current turn colour then the move will not be considered
 				}
 
+				#ifdef COMMENTS_ON_CHECK
+				cout << "Moving " << piece->getPieceName() << " from "\
+				 << piece->getPosition() <<" to " << piece->actual_possible_moves.at(k)\
+				<<" to see if  check still occurs" << endl;
+				#endif
 				string targetposition =  piece->actual_possible_moves.at(k);
-				tempreturn= Make_Temp_Move(targetposition,piece,colour,tempposition,temppiece);
-				if(tempreturn==0){ //not stalemate
-					return MOVE_VALID; // no stalmate as there is a move that the colour can make that is not check
+
+				//now make the move
+				bool targetexists =false; //true if there is a target piece
+
+				activeit = activepieces.find(targetposition);//do we need to reset the iterator to beginning first
+				if(activeit != activepieces.end() ){
+					#ifdef COMMENTS_ON_CHECK
+					cout << "There is a " << (activeit->second)->getPieceName() \
+					<< "at this target position " << targetposition << endl;
+					#endif
+					temptargetpiece=(activeit->second);
+					targetexists=true;
+				}
+
+				if(targetexists==true){ // if there is a piece in the target position then call function to delete it
+					cout << "a. Deleting " << temptargetpiece << " from " << targetposition <<endl;
+					TakeTargetPiece(targetposition); // deleting target piece
+				}
+
+				//section to move piece to position_target on board and update activepieces list
+				#ifdef COMMENTS_ON_CHECK
+				cout << "b. Inserting" << piece << " aka " << \
+				piece->getPieceName()<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
+				#endif
+				activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), piece));
+				#ifdef COMMENTS_ON_CHECK
+				cout << "c. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
+				#endif
+
+				Delete_Piece(piece_possible_moves[i]);
+				//prrinting the board for debugging
+				#ifdef COMMENTS_ON_CHECK
+				PrintBoard();
+				#endif
+
+
+
+				//now check if check is still occuring.
+				#ifdef COMMENTS_ON_CHECK
+				cout << "Now checking if this move is allowed occuring by calling Is_Check2" <<endl;
+				#endif
+				int stillcheckblack=0;
+				stillcheckblack=Is_Check_2(colour); // true check checkmate black as white is just after moving
+				#ifdef COMMENTS_ON_CHECK
+				cout << "Is_Check_2 returns " << stillcheckblack<< endl;
+				#endif
+
+				if(stillcheckblack==1){ //still in check so undo move and try next
+					#ifdef COMMENTS_ON_CHECK
+					cout << "Undo-ing move as this move is not legal as would cause check" <<endl;
+					//undo new piece move
+					cout << "d. Deleting  "<< piece << "from " << piece->actual_possible_moves.at(k) << endl;
+					#endif
+					Delete_Piece(piece->actual_possible_moves.at(k));
+					//inserting piece in original position
+					#ifdef COMMENTS_ON_CHECK
+					cout << "e. ReInserting old " << temppiece << " @ " << piece_possible_moves[i] << endl;
+					#endif
+					activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
+
+					if(targetexists==true){
+						// reinserting deleted target piece
+						#ifdef COMMENTS_ON_CHECK
+						cout << "f. Reinserting targetposition " << temptargetpiece << " @ " << targetposition << endl;
+						#endif
+						activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
+
+					}
+					#ifdef COMMENTS_ON_CHECK
+					cout << "g. Printing at end of reshuffle" << endl;
+					PrintBoard();
+					#endif
+
+
+				}
+
+				if(stillcheckblack==0){//this move can be made to get rid of the check therefore checkmate is not occuring
+					//break from loop
+					cout << "A move exists that will not result in stalemate" << endl;
+					cout << "It is " << piece->getPieceName() << " @ " << piece->getPosition() << " to "\
+					<< targetposition << endl;
+					//undo moves and return false to calling submitMove. is not in checkmate
+					Delete_Piece(targetposition);
+					//inserting piece in original position
+					activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
+					if(targetexists==true){
+						// inserting deleted target piece
+						activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
+					}
+					#ifdef COMMENTS_ON_CHECK
+					PrintBoard();
+					#endif
+
+					return 0;
 				}
 			}
 		}
 	}
-
-return STALEMATE;
+return STALEMATE;//dummy return as of yet
 
 }
 
@@ -400,9 +361,7 @@ int Chessboard::Check_Checkmate(bool colour){
 		//return 1 if checkmate
 		Piece* piece;
 		Piece* temppiece;
-	//	Piece* temptargetpiece;
-		string tempposition;
-		int tempreturn;
+		Piece* temptargetpiece;
 		cout << "In checkmate function" <<endl;
 		if (colour==true){
 			cout << "checking checkmate for black" << endl;
@@ -414,22 +373,142 @@ int Chessboard::Check_Checkmate(bool colour){
 
 		for(unsigned int i =0; i< piece_possible_moves.size(); i++){
 			activeit = activepieces.find(piece_possible_moves[i]);
-			tempposition=piece_possible_moves[i];
 			if(activeit != activepieces.end() ){
 				piece = activeit->second;
 				temppiece=piece;
 				for(unsigned int k =0; k< piece->actual_possible_moves.size(); k++){
+					#ifdef COMMENTS_ON_CHECK
+					cout << "*****************************************************************"<<endl;
+					#endif
 					// //check colour of piece
 					if(piece->getPieceColour()==colour){
 						continue;//if the move is that of the current turn colour then the move will not be considered
 					}
-					string targetposition = piece->actual_possible_moves.at(k);
-					tempreturn= Make_Temp_Move(targetposition,piece,colour,tempposition,temppiece);
-					if(tempreturn==0){ //not stalemate
-						return MOVE_VALID; // no stalmate as there is a move that the colour can make that is not check
+
+					#ifdef COMMENTS_ON_CHECK
+					cout << "Moving " << piece->getPieceName() << " from "\
+					 << piece->getPosition() <<" to " << piece->actual_possible_moves.at(k)\
+					<<" to see if  check still occurs" << endl;
+					#endif
+					string targetposition =  piece->actual_possible_moves.at(k);
+
+					//now make the move
+					bool targetexists =false; //true if there is a target piece
+
+					activeit = activepieces.find(targetposition);//do we need to reset the iterator to beginning first
+					if(activeit != activepieces.end() ){
+						#ifdef COMMENTS_ON_CHECK
+						cout << "There is a " << (activeit->second)->getPieceName() \
+						<< "at this target position " << targetposition << endl;
+						#endif
+						temptargetpiece=(activeit->second);
+						targetexists=true;
 					}
 
+					if(targetexists==true){ // if there is a piece in the target position then call function to delete it
+						cout << "0. Deleting " << temptargetpiece << " from " << targetposition <<endl;
+						TakeTargetPiece(targetposition); // deleting target piece
+					}
+
+
+
+					//section to move piece to position_target on board and update activepieces list
+					//Update_Active_Pieces((piece->actual_possible_moves.at(k)),targetposition, piece); //upadte the active list
+
+					//update board
+					#ifdef COMMENTS_ON_CHECK
+					cout << "1. Inserting" << piece << " aka " << \
+					piece->getPieceName()<< " @ "<<piece->actual_possible_moves.at(k)<<endl;
+					#endif
+					activepieces.insert(pair<string, Piece*>(piece->actual_possible_moves.at(k), piece));
+					#ifdef COMMENTS_ON_CHECK
+					cout << "2. Deleting" << piece<< " @ " << piece_possible_moves[i] << endl;
+					#endif
+
+					Delete_Piece(piece_possible_moves[i]);
+					//prrinting the board for debugging
+					#ifdef COMMENTS_ON_CHECK
+					PrintBoard();
+					#endif
+
+					//now check if check is still occuring.
+					#ifdef COMMENTS_ON_CHECK
+					cout << "Now checking if check is still occuring by calling Is_Check_Black2" <<endl;
+					#endif
+					int stillcheckblack=0;
+//why is blackk notupdated??
+					#ifdef COMMENTS_ON_CHECK
+					cout << "Check_Checkmate_Black the kings pos is " << Where_is_the_king(colour) <<endl;
+					#endif
+//do we need to do the next line?????!!
+					//Clear_Possible_Move_Lists();
+
+					//problem here as King is still being sent/used as E8 in this function
+
+					stillcheckblack=Is_Check_2(colour); // true check checkmate black as white is just after moving
+
+
+
+					#ifdef COMMENTS_ON_CHECK
+					cout << "Is_Check_2 returns " << stillcheckblack<< endl;
+					#endif
+
+					if(stillcheckblack==1){ //still in check so undo move and try next
+						#ifdef COMMENTS_ON_CHECK
+						cout << "Undo-ing move as this does not get rid of check" <<endl;
+						//undo new piece move
+						cout << "3. Deleting  "<< piece << "from " << piece->actual_possible_moves.at(k) << endl;
+						#endif
+						Delete_Piece(piece->actual_possible_moves.at(k));
+						//inserting piece in original position
+						#ifdef COMMENTS_ON_CHECK
+						cout << "4. ReInserting old " << temppiece << " @ " << piece_possible_moves[i] << endl;
+						#endif
+						activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
+
+						if(targetexists==true){
+							// inserting deleted target piece
+							#ifdef COMMENTS_ON_CHECK
+							cout << "5. Reinserting targetposition " << temptargetpiece << " @ " << targetposition << endl;
+							#endif
+							activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
+
+						}
+						#ifdef COMMENTS_ON_CHECK
+						cout << "6. Printing at end of reshuffle" << endl;
+
+						PrintBoard();
+						#endif
+
+
+					}
+
+					if(stillcheckblack==0){//this move can be made to get rid of the check therefore checkmate is not occuring
+						//break from loop
+						cout << "A move exists that can get rid of check" << endl;
+						//undo moves and return false to calling submitMove. is not in checkmate
+						Delete_Piece(targetposition);
+						//inserting piece in original position
+						activepieces.insert(pair<string, Piece*>(piece_possible_moves[i], temppiece));
+
+						if(targetexists==true){
+							// inserting deleted target piece
+							activepieces.insert(pair<string, Piece*>(targetposition, temptargetpiece)); //reinstate deleted piece
+						}
+						#ifdef PRINTING
+						PrintBoard();
+						#endif
+
+						return 0;
+					}
+
+
+
+
 				}
+
+
+
 
 			}
 
@@ -486,29 +565,30 @@ string Chessboard::Where_is_the_king(bool colour){ //this function does not work
 
 
 
+
+
+
 bool Chessboard::Is_Check_2(bool colour){
 	//returns true if it is check
 	//returns 0 if not check
 
 
 	//debugging
-	#ifdef PRINTING
 	cout <<"Printing board in Check_2"<<endl;
+	#ifdef PRINTING
 	PrintBoard();
 	#endif
 	bool incheck=false; //1 if incheck
 	//checking where the kings are at
-	#ifdef COMMENTS_ON_CHECK
+	cout<< "The colour passed is" << colour << endl;
+	cerr<< "will fault after this" << endl;
 	cerr<< "The black king is at" << Where_is_the_king(colour)<< endl;
-	cout <<"Is_Check_2 -- clearing threatening pieces list" << endl;
-	#endif
 
+	cout <<"Is_Check_2 -- clearing threatening pieces list" << endl;
 	 positions_threatening_bking.clear(); // need to clear before!!!!
 	 positions_threatening_wking.clear();
 
-
-	 #ifdef POSSIBLE_MOVES_PRINT
-	 cout << "Printing positions_threatening_king's BEFORE Check_All_Possible_Moves2" << endl;
+	 cout << "Printing positions_threatening_king's before Check_All_Possible_Moves2" << endl;
 	 cout << "Threating black king" <<endl;
  	for(unsigned int i=0; i < positions_threatening_bking.size(); i++){
  			cout << positions_threatening_bking[i] <<endl;
@@ -517,7 +597,6 @@ bool Chessboard::Is_Check_2(bool colour){
 	for(unsigned int i=0; i < positions_threatening_wking.size(); i++){
 			cout << positions_threatening_wking[i] <<endl;
 	}
-	#endif
 
 
 
@@ -532,17 +611,15 @@ bool Chessboard::Is_Check_2(bool colour){
 
 
 	//printing positions_threatening_bking
-	#ifdef POSSIBLE_MOVES_PRINT
 	cout << "Printing positions_threatening_king's before Check_All_Possible_Moves2" << endl;
 	cout << "Threating black king" <<endl;
-	for(unsigned int i=0; i < positions_threatening_bking.size(); i++){
-	   cout << positions_threatening_bking[i] <<endl;
-	}
+   for(unsigned int i=0; i < positions_threatening_bking.size(); i++){
+		   cout << positions_threatening_bking[i] <<endl;
+   }
 	cout << "Threating white king" <<endl;
-	for(unsigned int i=0; i < positions_threatening_wking.size(); i++){
-	   cout << positions_threatening_wking[i] <<endl;
-	}
-	#endif
+   for(unsigned int i=0; i < positions_threatening_wking.size(); i++){
+		   cout << positions_threatening_wking[i] <<endl;
+   }
 
 
 
@@ -553,16 +630,15 @@ bool Chessboard::Is_Check_2(bool colour){
 		incheck=true;
 	}
 
-	#ifdef COMMENTS_ON_CHECK
-	cout << "Is_Check_2:: The in check status is " << incheck << endl;
-	#endif
+
+	cout << "The in check status is " << incheck << endl;
 	return incheck;
 
 }
 
 
 int Chessboard::Check_All_Possible_Moves2(string position){
-	// this function is version 2 as dont want it to add to the list of actual_possible_moves - is for checkmate checking
+// this function is version 2 as dont want it to add to the list of actual_possible_moves - is for checkmate checking
 
 	Piece* piece;
 
@@ -570,7 +646,7 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 	activeit = activepieces.find(position);
 	if(activeit != activepieces.end() ){
 		piece = activeit->second;
-		#ifdef POSSIBLE_MOVES_PRINT
+		#ifdef COMMENTS_ON
 		cout << "Chessboard::Check_All_Possible_Moves:" <<endl <<" There is a " <<\
 		 (activeit->second)->getPieceName() \
 		<< " at this position " << position << endl;
@@ -628,6 +704,7 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 		if(testmoveint==0 && piece_possible_moves[i]== Where_is_the_king(false)&& \
 		(find(positions_threatening_bking.begin(), positions_threatening_bking.end(), position) ==\
 		 positions_threatening_bking.end()) &&piece->getPieceColour()==true){
+			cout<< "adding to the threatening the black king list" <<endl;
 			this->positions_threatening_bking.push_back(position);
 		}
 
@@ -641,13 +718,13 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 
 
 	//possible moves vector
-	#ifdef POSSIBLE_MOVES_PRINT
+	// #ifdef COMMENTS_ON
 	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
 	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
 		cout << piece->actual_possible_moves[i]  << " ";
 	}
 	cout <<"]" <<endl;
-	#endif
+	// #endif
 
 	return MOVE_VALID;
 }
@@ -656,7 +733,7 @@ int Chessboard::Check_All_Possible_Moves2(string position){
 
 
 int Chessboard::Check_All_Possible_Moves(string position){
-
+//
 	Piece* piece;
 	#ifdef COMMENTS_ON
 	cout << "Entering Check_All_Possible_Moves for " << position<<endl;
@@ -740,14 +817,14 @@ int Chessboard::Check_All_Possible_Moves(string position){
 
 
 	//possible moves vector
-	#ifdef POSSIBLE_MOVES_PRINT
+	// #ifdef COMMENTS_ON
 	cout <<"PM for "<<piece->getPieceName() << "\t" << "[";
 
 	for(unsigned int i =0; i < piece->actual_possible_moves.size(); i++){
 		cout << piece->actual_possible_moves[i]  << " ";
 	}
 	cout <<"]" <<endl;
-	#endif
+	// #endif
 	return MOVE_VALID;
 
 
@@ -822,9 +899,7 @@ void Chessboard::Delete_Piece(string position){
 	activeit = activepieces.find(position);
 	if(activeit != activepieces.end() ){
 		activepieces.erase(activeit);
-		#ifdef COMMENTS_ON
 		cout << position << "deleted" << endl;
-		#endif
 	}
 	else{
 		cout << "Error, no piece in position" << position << endl;
@@ -971,10 +1046,12 @@ int Chessboard::Check_Move_Valid(string position, Piece* piece){
 	string testposition=position;
 	errorcode = Position_within_range(testposition);
 	if(errorcode!=0){
+		cout << "Position out of range" <<endl;
 		return  errorcode;
 	}
 	errorcode = Check_Same_Colour(position); //checks if the space is occupied or not
 	if(errorcode==0){ // if the value returned is an "error" then it is ok
+		cout << "Position " << position<< "occuped by correct turn colour so ok" <<endl;
 		return MOVE_VALID;
 	}
 
