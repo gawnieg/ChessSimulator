@@ -39,10 +39,10 @@ class Chessboard{
 	int Check_Move_Valid(string position, Piece* piece);
 	void PrintBoard();
 	int Position_within_range(string pos_to_be_checked);
-	int Check_Move_Target_Valid(string position, string targetposition);
+	int Check_Move_Target_Valid(string position, string targetposition); //
 	void Update_Active_Pieces(string position, string position_target, Piece* piece);
 	void TakeTargetPiece(string position_target);
-	int Check_All_Possible_Moves(string position, bool first); // checks all possible moves for a piece in a position
+	int Check_All_Possible_Moves(string position, bool first); // checks all possible moves for a piece in a position, also if it is the first time round a 1 needs to be sent too
 	bool Check_If_Correct_Turn(bool colourtocheck);
 	void Change_Turn();//called at end of submit move to update turn
 	int Check_Same_Colour(string position); //checks if the position passed is the same as turn
@@ -54,7 +54,7 @@ class Chessboard{
 	int Check_Stalemate(bool colour);
 	int Make_Temp_Move(string targetposition,Piece* piece,bool colour,string tempposition,Piece* temppiece);
 	bool Is_Check_2(bool colour);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
-	int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
+
 
 	string Where_is_the_king(bool colour);//might delete??
 
