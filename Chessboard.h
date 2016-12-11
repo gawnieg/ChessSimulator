@@ -13,21 +13,14 @@ class Chessboard{
 
 	private:
 
-		bool turn; // = 1 if whites turn, equal to 0 if blacks turn
+	bool turn; // = 1 if whites turn, equal to 0 if blacks turn
 
 	map<string, Piece*> board;
 	map<string, Piece*>::iterator it;
 
-
-
 	vector<string> piece_possible_moves;
 	vector<string> positions_threatening_wking;
 	vector<string> positions_threatening_bking;
-
-
-
-
-
 
 	Rook *whiter1, *whiter2, *blackr1, *blackr2;
 	Bishop *whiteb1, *whiteb2, *blackb1, *blackb2;
@@ -55,16 +48,12 @@ class Chessboard{
 	int Check_Piece_At_Pos(const string &position);
 	bool Is_Check(bool colour, bool firstround);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
 	int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
-
 	string Where_is_the_king(bool colour);//might delete??
-
-
 	void SetupBoard();
 	void Clear_Board();
 
 	public:
 	Chessboard();
-	void setupboardmap(string position, Piece* pieceptr); //function to enter values into board map when they are being constructed
 	void setupactivepieces(string position, Piece* pieceptr); //function to set up the active pieces
 	void Delete_Piece(string position);
 	int submitMove(string position, string position_target); // this is the called function from main.

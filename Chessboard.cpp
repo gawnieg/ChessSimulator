@@ -498,9 +498,7 @@ int Chessboard::Check_All_Possible_Moves(string position, bool firstround){
 
 }// end of Check_All_Possible_Moves function
 
-void Chessboard::setupboardmap(string position, Piece* pieceptr){
-	board.insert(pair<string, Piece*>(position, pieceptr));
-}
+
 
 
 void Chessboard::setupactivepieces(string position, Piece* pieceptr){

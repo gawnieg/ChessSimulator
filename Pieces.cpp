@@ -15,7 +15,6 @@ Piece::Piece(bool _colour, string _name, string _position, Chessboard* _chessboa
 	name=_name; //name of piece
 	position = _position; //holds the position of the piece in form A4
 	chessboardptr=_chessboardptr;  // pieces constructor
-	chessboardptr->setupboardmap(position,this);
 	chessboardptr->setupactivepieces(position,this);
 
 
@@ -36,7 +35,7 @@ bool Piece::getPieceColour(){//getter function
 
 string Piece::setPosition(string future){
 	position = future;
-return MOVE_VALID; //dummy return unused function
+	return MOVE_VALID; //dummy return unused function
 
 }
 
@@ -80,17 +79,10 @@ return INVALID_QUEEN_MOVE;
 King::King( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//King constructor
-	}
+}
 
 int King::makemove(const string &position, const string &targetposition){
 
-	// cout <<endl;
-	// cout << "Checking for " << this->getPieceName() << " @ " << this->getPosition()<<endl;
-	// cout<< "position[0] is" <<position[0]<<endl;
-	// cout<< "position[1] is" <<position[1]<<endl;
-	// cout<< "targetposition[0] is" <<targetposition[0]<<endl;
-	// cout<< "targetposition[1] is" <<targetposition[1]<<endl;
-	// cout << "abs(targetposition[0]-position[0]) is  " << abs(targetposition[0]-position[0])<<endl;
 	//check for diagonal
 	if(((abs(targetposition[0]-position[0]) == abs(targetposition[1]-position[1]))\
 	&&abs(targetposition[1]-position[1])==1)\
@@ -173,20 +165,16 @@ Rook::Rook( string _name, bool _colour, string _position, Chessboard* chessboard
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Rook constructor
 
-	}
+}
 
 int Rook::makemove(const string &position, const string &targetposition){
-		//gonna subtract from the number part to move down the board
-		//vertical movement
-		//cout <<"checking if vertical" <<endl;
+
 		if(((position[1]-targetposition[1] >=1 || targetposition[1]-position[1] >=1)\
 		&& position[0] == targetposition[0])\
 		&& Check_If_Blocked_Vertical(position, targetposition)==0 ){
 			return 0;
 		}
-		//cout <<"not vertical" <<endl;
-		//horizontal movement
-		//cout <<"checking if horizontal" <<endl;
+
 		if(((position[0] -targetposition[0] >=1 ||targetposition[0]-position[0] >=1)\
 		&&position[1]==targetposition[1])&& \
 		Check_If_Blocked_Horizontal(position, targetposition)==0){
@@ -196,7 +184,6 @@ int Rook::makemove(const string &position, const string &targetposition){
 		else{
 			return INVALID_ROOK_MOVE;
 		}
-
 }
 
 
@@ -207,8 +194,7 @@ int Rook::makemove(const string &position, const string &targetposition){
 Bishop::Bishop(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Bishop constructor
-
-	}
+}
 
 
 int Bishop::makemove(const string &position, const string &targetposition){
@@ -227,7 +213,7 @@ return INVALID_BISHOP_MOVE;
 Pawn::Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 
-	}
+}
 
 
 Piece::~Piece(){
@@ -247,10 +233,6 @@ Piece* Piece::GetPiecePtrGivenPos(string position){
 	else{
 		return NULL;
 	}
-
-
-
-
 
 }
 
@@ -277,8 +259,6 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				return MOVE_VALID;
 			}
 		}
-
-
 
 		if(this->getPieceColour() ==1){//the piece to be moved is white
 			//gonna subtract from the number part to move down the board
@@ -461,9 +441,6 @@ int Piece::Check_If_Blocked_Diag(const string &position, const string &targetpos
 	*/
 
 	if(targetposition[0] -position[0]>0 && targetposition[1]-position[1]>0){ // moving down the board from the black side to the white side
-		#ifdef COMMENTS_ON
-		cout << "MOVING Example A1->D4 " <<endl;
-		#endif
 		for(int i=1; i<(targetposition[1]-position[1]); i++){// 1 starting as dont want to check itself!
 			string temp;
 			temp+=position[0]+i;
@@ -476,9 +453,6 @@ int Piece::Check_If_Blocked_Diag(const string &position, const string &targetpos
 	}
 
 	if(position[0] -targetposition[0]>0 && position[1]-targetposition[1]>0){// moving up the board!
-		#ifdef COMMENTS_ON
-		cout << "MOVING Example D4->A1 " <<endl;
-		#endif
 		for(int i=1; i<(position[0]-targetposition[0]); i++){
 			string temp;
 			temp+=position[0]-i;
@@ -492,9 +466,6 @@ int Piece::Check_If_Blocked_Diag(const string &position, const string &targetpos
 	}
 
 	if(position[0] -targetposition[0]>0 && targetposition[1]-position[1]>0){// moving up the board!
-		#ifdef COMMENTS_ON
-		cout << "MOVING Example D1->A4 " <<endl;
-		#endif
 		for(int i=1; i<(targetposition[1]-position[1]); i++){
 			string temp;
 			temp+=position[0]-i;
@@ -507,9 +478,6 @@ int Piece::Check_If_Blocked_Diag(const string &position, const string &targetpos
 		}
 	}
 	if(targetposition[0] -position[0]>0 && position[1]-targetposition[1]>0){// moving up the board!
-		#ifdef COMMENTS_ON
-		cout << "MOVING Example A4->D1 " <<endl;
-		#endif
 		for(int i=1; i<(position[1]-targetposition[1]); i++){
 			string temp;
 			temp+=position[0]+i;
