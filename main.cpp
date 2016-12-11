@@ -10,7 +10,30 @@
 
 Chessboard cb;
 
-// cb.submitMove("G2", "G5");//move for stalemate play
+
+//////////////////FOOLS MATE /////////////////
+// cb.submitMove("F2", "F3");//move for stalemate play
+// cb.submitMove("E7", "E5");//move for stalemate play
+// cb.submitMove("G2", "G4");//move for stalemate play
+// cb.submitMove("D8", "H4");//move for stalemate play
+// ////??ENDOFFOOLSMATE//////////
+
+// cb.submitMove("G1","G6");
+
+
+//scholars mate!
+// cb.submitMove("E2","E4");
+// cb.submitMove("E7","E5");
+//
+// cb.submitMove("F1","C4");
+// cb.submitMove("F8","C5");
+//
+// cb.submitMove("D1","H5");
+// cb.submitMove("G8","F6");
+//
+// cb.submitMove("H5","F7"); // should be checkmate
+//end of scholars mate
+
 
 /*
      cout << "===========================" << endl;
@@ -60,96 +83,95 @@ Chessboard cb;
 //////////////////////////////////////////STALEMATE PLAY???????????????????????????
 
 
+/*
+cout << endl;
+
+cb.submitMove("E2", "E3");
 
 cout << endl;
-//
-// cb.submitMove("E2", "E3");
-//
-// cout << endl;
-//
-// cb.submitMove("A7", "A5");
-//
-// cout << endl;
-//
-// cb.submitMove("D1", "H5");
-//
-// cout << endl;
-//
-// cb.submitMove("A8", "A6");
-//
-// cout << endl;
-//
-// cb.submitMove("H5", "A5");
-//
-// cout << endl;
-//
-// cb.submitMove("H7", "H5");
-//
-// cout << endl;
-//
-// cb.submitMove("H2", "H4");
-//
-// cout << endl;
-//
-// cb.submitMove("A6", "H6");
-//
-// cout << endl;
-//
-// cb.submitMove("A5", "C7");
-//
-// cout << endl;
-//
-// cb.submitMove("F7", "F6");
-//
-// cout << endl;
-//
-// cb.submitMove("C7", "D7");
-//
-// cout << endl;
-//
-// cb.submitMove("E8", "F7");
-//
-// cout << endl;
-//
-// cb.submitMove("D7", "B7");
-//
-// cout << endl;
-//
-// cb.submitMove("D8", "D3");
-//
-// cout << endl;
-//
-// cb.submitMove("B7", "B8");
-//
-// cout << endl;
-//
-// cb.submitMove("D3", "H7");
-//
-// cout << endl;
-//
-// cb.submitMove("B8", "C8");
-//
-// cout << endl;
-//
-// cb.submitMove("F7", "G6");
-//
-// cout << endl;
-//
-// cb.submitMove("C8", "E6");
-//
-// cout << endl;
-//
-// cb.submitMove("D7", "F6");
-//
-// cout << endl;
+
+cb.submitMove("A7", "A5");
+
+cout << endl;
+
+cb.submitMove("D1", "H5");
+
+cout << endl;
+
+cb.submitMove("A8", "A6");
+
+cout << endl;
+
+cb.submitMove("H5", "A5");
+
+cout << endl;
+
+cb.submitMove("H7", "H5");
+
+cout << endl;
+
+cb.submitMove("H2", "H4");
+
+cout << endl;
+
+cb.submitMove("A6", "H6");
+
+cout << endl;
+
+cb.submitMove("A5", "C7");
+
+cout << endl;
+
+cb.submitMove("F7", "F6");
+
+cout << endl;
+
+cb.submitMove("C7", "D7");
+
+cout << endl;
+
+cb.submitMove("E8", "F7");
+
+cout << endl;
+
+cb.submitMove("D7", "B7");
+
+cout << endl;
+
+cb.submitMove("D8", "D3");
+
+cout << endl;
+
+cb.submitMove("B7", "B8");
+
+cout << endl;
+
+cb.submitMove("D3", "H7");
+
+cout << endl;
+
+cb.submitMove("B8", "C8");
+
+cout << endl;
+
+cb.submitMove("F7", "G6");
+
+cout << endl;
+
+cb.submitMove("C8", "E6");
+
+cout << endl;
+
+cb.submitMove("D7", "F6");
+
+cout << endl;
 
 
+*/
 
 
 
 ////////////////////////////////////END OF STALEMATE PLAy////////////////////////////////////
-
-
 
 
 
