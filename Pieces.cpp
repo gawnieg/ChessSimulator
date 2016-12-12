@@ -27,10 +27,7 @@ bool Piece::getPieceColour(){//getter function
 	return piececolour;
 }
 
-string Piece::setPosition(string future){
-	position = future;
-	return MOVE_VALID; //dummy return unused function
-}
+
 
 
 Queen::Queen( string _name, bool _colour, string _position, ChessBoard* chessboardptr):\

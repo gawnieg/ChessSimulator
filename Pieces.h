@@ -31,7 +31,6 @@ string getPosition();
 bool getPieceColour();
 virtual int makemove(const string &position, const string &targetposition)=0;
 vector<string> actual_possible_moves;
-string setPosition(string future);
 bool firstmove =1;
 virtual ~Piece();
 
