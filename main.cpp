@@ -6,102 +6,83 @@
  #include "Pieces.h"
 
  int main() {
- Chessboard cb;
-
-
- cout<<"CHECKING PAWN"<<endl<<endl;
-
- cout<<"moves should be allowed"<<endl<<endl;
-
-
-
- cb.submitMove("D2", "D4");
-
- cb.submitMove("D7", "D5");
-
- cout<<endl;
-
-
-
- cb.submitMove("E2", "E4");
-
- cb.submitMove("E7", "E5");
-
- cout<<endl;
-
-
-
- cb.submitMove("F2", "F3");
-
- cb.submitMove("F7", "F6");
-
- cout<<endl;
-
-
-
- cb.submitMove("H2", "H4");
-
- cb.submitMove("A7", "A5");
-
- cout<<endl;
-
-
-
- cb.submitMove("C1", "H6");
-
- cb.submitMove("F8", "A3");
-
- cout<<endl;
-
-
-
- cout<<"moves shouldn't be allowed:"<<endl<<endl;
-
- cb.submitMove("D4", "D5");
-
- cb.submitMove("D4", "C5");
-
- cb.submitMove("D4", "E6");
-
- cb.submitMove("d4", "E5");
-
- cb.submitMove("84", "E5");
-
- cb.submitMove("D4", "C4");
-
- cb.submitMove("D4", "D3");
-
- cb.submitMove("D4", "D2");
-
- cb.submitMove("D4", "I4");
-
- cb.submitMove("A2", "A4");
-
- cb.submitMove("A2", "A3");
-
- cb.submitMove("F3", "E4");
-
- cb.submitMove("H7", "H5");
-
- cout<<endl;
-
-
-
- cout<<"moves should be allowed, taking pieces:"<<endl<<endl;
-
-
-
- cb.submitMove("D4", "E5");
-
- cb.submitMove("F6", "E5");
-
- cout<<endl;
-
-
+ ChessBoard cb;
 
  cb.resetBoard();
 
 
+
+
+     cout << "===========================" << endl;
+     cout << "Testing the Chess Engine" << endl;
+     cout << "===========================" << endl;
+     cout << endl;
+
+
+     cout << endl;
+
+     cb.submitMove("D7", "D6");
+     cout << endl;
+
+     cb.submitMove("D4", "H6");
+     cout << endl;
+
+     cb.submitMove("D2", "D4");
+     cout << endl;
+
+     cb.submitMove("F8", "B4");
+     cout << endl;
+
+     cout << "===========================" << endl;
+     cout << "Alekhine vs. Vasic (1931)" << endl;
+     cout << "===========================" << endl;
+     cout << endl;
+
+     cb.resetBoard();
+     cout << endl;
+
+     cb.submitMove("E2", "E4");
+     cb.submitMove("E7", "E6");
+     cout << endl;
+
+     cb.submitMove("D2", "D4");
+     cb.submitMove("D7", "D5");
+     cout << endl;
+
+     cb.submitMove("B1", "C3");
+     cb.submitMove("F8", "B4");
+     cout << endl;
+
+     cb.submitMove("F1", "D3");
+     cb.submitMove("B4", "C3");
+     cout << endl;
+
+     cb.submitMove("B2", "C3");
+     cb.submitMove("H7", "H6");
+     cout << endl;
+
+     cb.submitMove("C1", "A3");
+     cb.submitMove("B8", "D7");
+     cout << endl;
+
+     cb.submitMove("D1", "E2");
+     cb.submitMove("D5", "E4");
+     cout << endl;
+
+     cb.submitMove("D3", "E4");
+     cb.submitMove("G8", "F6");
+     cout << endl;
+
+     cb.submitMove("E4", "D3");
+     cb.submitMove("B7", "B6");
+     cout << endl;
+
+     cb.submitMove("E2", "E6");
+     cb.submitMove("F7", "E6");
+     cout << endl;
+
+     cb.submitMove("D3", "G6");
+     cout << endl;
 
 
 return 0;

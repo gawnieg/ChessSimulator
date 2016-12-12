@@ -4,7 +4,7 @@
 #include "Chessboard.h"
 #include "errors.h"
 
-#define COMMENTS_ON
+// #define COMMENTS_ON
 
 using namespace std;
 
@@ -257,7 +257,7 @@ Piece* Piece::GetPiecePtrGivenPos(string position){
 
 
 int Pawn::makemove(const string &position, const string &targetposition){
-cout << "first move " << firstmove << endl;
+
 	if(firstmove==true){
 		//if the firstmove is true, then can move two spaces forward
 		if(this->getPieceColour() ==0){//the piece to be moved is black
@@ -265,7 +265,7 @@ cout << "first move " << firstmove << endl;
 			if(((position[1]-targetposition[1] ==2 && position[0] == targetposition[0])\
 				||(position[1]-targetposition[1] ==1 && position[0] == targetposition[0])) \
 			&& Check_If_Blocked_Vertical(position, targetposition)==0){
-				cout << "Here" << endl;
+		
 				return MOVE_VALID;
 
 			}
@@ -275,7 +275,7 @@ cout << "first move " << firstmove << endl;
 			//gonna subtract from the number part to move down the board
 			if((position[1]-targetposition[1] ==1 && abs(targetposition[0]-position[0])==1)\
 			&& GetPiecePtrGivenPos(targetposition)!=NULL)
-			{cout << "Here" << endl;
+			{
 				return MOVE_VALID;
 			}
 		}
@@ -288,7 +288,7 @@ cout << "first move " << firstmove << endl;
 			if(((targetposition[1]-position[1] ==2 && position[0] == targetposition[0])\
 			||(targetposition[1]-position[1] ==1 && position[0] == targetposition[0]))\
 			&& Check_If_Blocked_Vertical(position, targetposition)==0){
-				cout << "Here" << endl;
+
 				return MOVE_VALID;
 			}
 		}
@@ -298,7 +298,7 @@ cout << "first move " << firstmove << endl;
 
 			if((targetposition[1]-position[1] ==1 && abs(position[0]-targetposition[0])==1)\
 			&& GetPiecePtrGivenPos(targetposition)!=NULL)
-			{cout << "Here" << endl;
+			{
 				return MOVE_VALID;
 			}
 		}
@@ -313,7 +313,7 @@ cout << "first move " << firstmove << endl;
 			if(position[1]-targetposition[1] ==1\
 				&& position[0] == targetposition[0]
 				 && Check_If_Blocked_Vertical(position, targetposition)==0){
-					 cout << "Here" << endl;
+
 				// this->firstmove=false;  //set firstmove to false as its firstmove has been completed
 				return MOVE_VALID;
 			}
@@ -324,7 +324,7 @@ cout << "first move " << firstmove << endl;
 			//gonna subtract from the number part to move down the board
 			if((abs(position[0]-targetposition[0]) ==1 && abs(position[1]-targetposition[1]) ==1 \
 				&& GetPiecePtrGivenPos(targetposition)!=NULL)){
-					cout << "Here" << endl;
+
 				return MOVE_VALID;
 			}
 		}
@@ -334,15 +334,14 @@ cout << "first move " << firstmove << endl;
 			&& position[0] == targetposition[0]
 			&& Check_If_Blocked_Vertical(position, targetposition)==0){//the piece to be moved is black
 			if(targetposition[1]-position[1] ==1){
-				cout << "Here" << endl;
-				return MOVE_VALID;
+							return MOVE_VALID;
 			}
 		}
 		if(this->getPieceColour() ==1){//the piece to be moved is white and it is a diagonal move
 			//gonna subtract from the number part to move down the board
 			if((targetposition[0]-position[0] ==1 && targetposition[1]-position[1] ==1\
 			&& GetPiecePtrGivenPos(targetposition)!=NULL)){
-				cout << "Here" << endl;
+
 				return MOVE_VALID;
 			}
 		}

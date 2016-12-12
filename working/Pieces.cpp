@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Piece::Piece(bool _colour, string _name, string _position, ChessBoard* _chessboardptr ){
+Piece::Piece(bool _colour, string _name, string _position, Chessboard* _chessboardptr ){
 
 	// cout<< "Constructing piece"<<endl;
 	piececolour=_colour; //true if black, white if false
@@ -43,7 +43,7 @@ string Piece::setPosition(string future){
 
 
 
-Queen::Queen( string _name, bool _colour, string _position, ChessBoard* chessboardptr):\
+Queen::Queen( string _name, bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 	//Queen constuctor
 
@@ -76,7 +76,7 @@ int Queen::makemove(const string &position, const string &targetposition){
 return INVALID_QUEEN_MOVE;
 
 }
-King::King( string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
+King::King( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//King constructor
 }
@@ -112,7 +112,7 @@ return INVALID_KING_MOVE;
 
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-Knight::Knight( string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
+Knight::Knight( string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Knight constructor
 	}
@@ -161,7 +161,7 @@ int Knight::makemove(const string &position, const string &targetposition){
 
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-Rook::Rook( string _name, bool _colour, string _position, ChessBoard* chessboardptr):\
+Rook::Rook( string _name, bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Rook constructor
 
@@ -191,7 +191,7 @@ int Rook::makemove(const string &position, const string &targetposition){
 
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-Bishop::Bishop(string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
+Bishop::Bishop(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Bishop constructor
 }
@@ -210,7 +210,7 @@ return INVALID_BISHOP_MOVE;
 
 }
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-Pawn::Pawn(string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
+Pawn::Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 
 }
@@ -239,7 +239,6 @@ Piece* Piece::GetPiecePtrGivenPos(string position){
 
 
 int Pawn::makemove(const string &position, const string &targetposition){
-
 
 	if(firstmove==true){
 		//if the firstmove is true, then can move two spaces forward
@@ -315,7 +314,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 		}
 		if(this->getPieceColour() ==1){//the piece to be moved is white and it is a diagonal move
 			//gonna subtract from the number part to move down the board
-			if((position[0]-targetposition[0] ==1 && targetposition[1]-position[1] ==1\
+			if((targetposition[0]-position[0] ==1 && targetposition[1]-position[1] ==1\
 			&& GetPiecePtrGivenPos(targetposition)!=NULL)){
 				return MOVE_VALID;
 			}

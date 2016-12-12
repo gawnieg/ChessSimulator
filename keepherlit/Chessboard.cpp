@@ -8,15 +8,15 @@
 using namespace std;
 
 
-ChessBoard::ChessBoard(){
-	//ChessBoard constructor
+Chessboard::Chessboard(){
+	//chessboard constructor
 	//creating pieces
 	SetupBoard();
 
 
 }
 
-void ChessBoard::SetupBoard(){
+void Chessboard::SetupBoard(){
 	whiter1 = new Rook("White's Rook", true, "A1", this);
 	whiter2 = new Rook("White's Rook", true, "H1", this);
 	blackr1 = new Rook("Black's Rook", false, "A8", this);
@@ -62,7 +62,7 @@ void ChessBoard::SetupBoard(){
 	cout << "A new chess game has started!" <<endl;
 }
 
-void ChessBoard::Clear_Board(){
+void Chessboard::Clear_Board(){
 
   for (activeit=activepieces.begin(); activeit!=activepieces.end(); ++activeit){
         delete activeit->second;
@@ -72,7 +72,7 @@ void ChessBoard::Clear_Board(){
 }
 
 
-int ChessBoard::Check_If_Piece_Active(string pos){ //used in pieces!
+int Chessboard::Check_If_Piece_Active(string pos){ //used in pieces!
 
 	activeit = activepieces.find(pos);
 	if(activeit != activepieces.end() ){
@@ -82,9 +82,9 @@ int ChessBoard::Check_If_Piece_Active(string pos){ //used in pieces!
 	return MOVE_VALID;
 }
 
-int ChessBoard::submitMove(string position, string position_target){
+int Chessboard::submitMove(string position, string position_target){
 	/*this function is public and called from main
-	will check if the move is valid then with the ChessBoard and the game rules,
+	will check if the move is valid then with the chessboard and the game rules,
 	make the move, then update the activepieces,  */
 
 	int errorcode=0;
@@ -214,7 +214,7 @@ int ChessBoard::submitMove(string position, string position_target){
 
 }//end of submit move
 
-int ChessBoard::Make_Temp_Move(string targetposition, Piece* piece, bool colour, string tempposition, Piece* temppiece){
+int Chessboard::Make_Temp_Move(string targetposition, Piece* piece, bool colour, string tempposition, Piece* temppiece){
 
 	Piece* temptargetpiece;
 	bool targetexists =false; //true if there is a target piece
@@ -272,7 +272,7 @@ return TEMP_MOVE_DIDNT_WORK_OUT;//should not reach
 
 
 
-int ChessBoard::Check_Stalemate(bool colour){
+int Chessboard::Check_Stalemate(bool colour){
 
 	Piece* piece;
 	Piece* temppiece;
@@ -306,7 +306,7 @@ return STALEMATE;
 }
 
 
-int ChessBoard::Check_Checkmate(bool colour){
+int Chessboard::Check_Checkmate(bool colour){
 		//return non zero if checkmate
 		Piece* piece;
 		Piece* temppiece;
@@ -343,7 +343,7 @@ int ChessBoard::Check_Checkmate(bool colour){
 
 
 
-int ChessBoard::Clear_Possible_Move_Lists(){
+int Chessboard::Clear_Possible_Move_Lists(){
 
 	Piece* piece;
 	for(unsigned int i =0; i< piece_possible_moves.size(); i++){
@@ -358,7 +358,7 @@ int ChessBoard::Clear_Possible_Move_Lists(){
 }
 
 
-string ChessBoard::Where_is_the_king(bool colour){ //this function does not work!!!!!
+string Chessboard::Where_is_the_king(bool colour){ //this function does not work!!!!!
 
 	if(colour==true){
 		//search for the white king
@@ -382,7 +382,7 @@ string ChessBoard::Where_is_the_king(bool colour){ //this function does not work
 
 
 
-bool ChessBoard::Is_Check(bool colour, bool firstround){
+bool Chessboard::Is_Check(bool colour, bool firstround){
 	//returns true if it is check
 	//returns 0 if not check
 
@@ -420,7 +420,7 @@ bool ChessBoard::Is_Check(bool colour, bool firstround){
 
 }
 
-int ChessBoard::Check_All_Possible_Moves(string position, bool firstround){
+int Chessboard::Check_All_Possible_Moves(string position, bool firstround){
 
 	Piece* piece;
 
@@ -479,11 +479,11 @@ int ChessBoard::Check_All_Possible_Moves(string position, bool firstround){
 
 
 
-void ChessBoard::setupactivepieces(string position, Piece* pieceptr){
+void Chessboard::setupactivepieces(string position, Piece* pieceptr){
 	activepieces.insert(pair<string, Piece*>(position, pieceptr));
 }
 
-void ChessBoard::Delete_Piece(string position){
+void Chessboard::Delete_Piece(string position){
 	//find the piece first.
 	activeit = activepieces.find(position);
 	if(activeit != activepieces.end() ){
@@ -495,7 +495,7 @@ void ChessBoard::Delete_Piece(string position){
 }
 
 
-void ChessBoard::Change_Turn(){
+void Chessboard::Change_Turn(){
 	//change turn to other colour 1 if white, 0 if black
 	if(turn==false){
 		turn=true;
@@ -506,7 +506,7 @@ void ChessBoard::Change_Turn(){
 	}
 }
 
-bool ChessBoard::Check_If_Correct_Turn(bool colourtocheck){
+bool Chessboard::Check_If_Correct_Turn(bool colourtocheck){
 	//returns 1 if the piece being moved is the right colour to be moved
 	if(colourtocheck==turn){
 		return 1;
@@ -518,8 +518,8 @@ bool ChessBoard::Check_If_Correct_Turn(bool colourtocheck){
 
 
 
-void ChessBoard::Create_List_Board_Positions(){
-	//	creating list to be checked - this is all possible ChessBoard squares
+void Chessboard::Create_List_Board_Positions(){
+	//	creating list to be checked - this is all possible chessboard squares
 	for(char i = '1'; i < '9'; i++){
 		for(char j ='A'; j< 'I'; j++){
 			string temp;
@@ -537,14 +537,14 @@ void ChessBoard::Create_List_Board_Positions(){
 
 
 
-void ChessBoard::Update_Active_Pieces(string position, string position_target, Piece* piece){
+void Chessboard::Update_Active_Pieces(string position, string position_target, Piece* piece){
 	Delete_Piece(position); //delete old entry
 	activepieces.insert(pair<string, Piece*>(position_target, piece));
 
 }
 
 
-int ChessBoard::Check_Move_Target_Valid(string position, string targetposition){
+int Chessboard::Check_Move_Target_Valid(string position, string targetposition){
 	/* this function checks if the target is a valid target in terms of position and
 	also what piece is in the target
 	returns 0 if ok, other number otherwise
@@ -597,7 +597,7 @@ int ChessBoard::Check_Move_Target_Valid(string position, string targetposition){
 
 
 
-int ChessBoard::Check_Move_Valid(string position, Piece* piece){
+int Chessboard::Check_Move_Valid(string position, Piece* piece){
 	/* this function checks if moves submitted from the user in main are
 	valid in terms of the board (range) and turn rules */
 
@@ -615,7 +615,7 @@ int ChessBoard::Check_Move_Valid(string position, Piece* piece){
 	return errorcode;
 }
 
-int ChessBoard::Check_Same_Colour(string position){
+int Chessboard::Check_Same_Colour(string position){
 	//checks to see if the position passed is the same colour as turn
 	bool colourofpeiecetobemoved;
 	activeit = activepieces.find(position);
@@ -630,7 +630,7 @@ int ChessBoard::Check_Same_Colour(string position){
 
 
 
-int ChessBoard::Position_within_range(string pos_to_be_checked){ // function to check if the space passed is occupied
+int Chessboard::Position_within_range(string pos_to_be_checked){ // function to check if the space passed is occupied
 
 	//check if that position is even valid?! liek M7 etc.
 	if(pos_to_be_checked[0] < 'A' || pos_to_be_checked[0] >'H' ){
@@ -649,7 +649,7 @@ int ChessBoard::Position_within_range(string pos_to_be_checked){ // function to 
 
 
 /* Function to print current status of board */
-void ChessBoard::PrintBoard(){
+void Chessboard::PrintBoard(){
 	cout << "The board is as follows : " <<endl;
 	for(it=activepieces.begin();it != activepieces.end(); it++){
 		cout<<"position "<< it->first <<\
@@ -657,7 +657,7 @@ void ChessBoard::PrintBoard(){
 	}
 }
 
-void ChessBoard::resetBoard(){
+void Chessboard::resetBoard(){
 	//to reset chess board.
 	//1. delete all pieces
 	Clear_Board();

@@ -4,7 +4,7 @@
 #include <cmath>
 #include <vector>
 
-class ChessBoard; //forward declare chessboard as will use it in the constructor
+class Chessboard; //forward declare chessboard as will use it in the constructor
 
 using namespace std;
 
@@ -13,7 +13,7 @@ private:
 
 
 protected:
-ChessBoard* chessboardptr;
+Chessboard* chessboardptr;
 string position; // example "C4"
 bool piececolour; //true if black
 string name; //example
@@ -25,7 +25,7 @@ int Check_If_Blocked_Vertical(const string &position, const string &targetpositi
 int Check_If_Blocked_Horizontal(const string &position, const string &targetposition);//checks if blocked horiztonally
 int Check_If_Blocked_Diag(const string &position, const string &targetposition);
 public:
-Piece(bool _colour, string _name, string _position, ChessBoard* chessboardptr);
+Piece(bool _colour, string _name, string _position, Chessboard* chessboardptr);
 string getPieceName();
 string getPosition();
 bool getPieceColour();
@@ -43,32 +43,32 @@ virtual ~Piece();
 
 class Queen:public Piece{
 	public:
-	Queen(string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	Queen(string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	 int makemove(const string &position, const string &targetposition);
 
 };
 class Rook:public Piece{
 	public:
-	Rook(string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	Rook(string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	 int makemove(const string &position, const string &targetposition);
 
 };
 class Bishop:public Piece{
 	public:
-	Bishop(string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	Bishop(string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	int makemove(const string &position, const string &targetposition);
 
 
 };
 class King:public Piece{
 	public:
-	King( string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	King( string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	 int makemove( const string &position, const string &targetposition);
 	//virtual bool makemove(string position, string targetposition);
 };
 class Pawn:public Piece{
 	public:
-	Pawn(string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	Pawn(string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	 int makemove(const string &position, const string &targetposition);
 
 
@@ -79,7 +79,7 @@ int Check_If_Blocked_Vertical(const string &position, const string &targetpositi
 };
 class Knight:public Piece{
 	public:
-	Knight(string _name,bool _colour, string _position, ChessBoard* chessboardptr);
+	Knight(string _name,bool _colour, string _position, Chessboard* chessboardptr);
 	 int makemove(const string &position, const string &targetposition);
 };
 

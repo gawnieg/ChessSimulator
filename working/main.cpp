@@ -68,8 +68,6 @@ cb.submitMove("D2", "E3"); // this is passing!
 
 
 
-
-
 return 0;
 
 

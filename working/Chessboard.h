@@ -9,7 +9,7 @@
 #include "Pieces.h"
 #include <vector>
 
-class ChessBoard{
+class Chessboard{
 
 	private:
 
@@ -53,7 +53,7 @@ class ChessBoard{
 	void Clear_Board();
 
 	public:
-	ChessBoard();
+	Chessboard();
 	void setupactivepieces(string position, Piece* pieceptr); //function to set up the active pieces
 	void Delete_Piece(string position);
 	int submitMove(string position, string position_target); // this is the called function from main.

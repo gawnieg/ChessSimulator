@@ -7,9 +7,9 @@
 
 using namespace std;
 
-// #define COMMENTS_ON
+// // #define COMMENTS_ON
 #define COMMENTS_ON_CHECK
-// #define PRINTING
+// // #define PRINTING
 #define POSSIBLE_MOVES_PRINT
 
 Chessboard::Chessboard(){
@@ -176,19 +176,23 @@ int Chessboard::submitMove(string position, string position_target){
 	bool incheckwhite=false;
 	bool incheckblack=false;
 	//test if in check
-	if(turn == 1){ // white so check Is_Check_Black
-		// incheckblack=Is_Check_Black();
-		incheckblack=Is_Check(false,true);
-		cout << "In Check Black? " << incheckblack << endl;
-	}
-	if(turn==0){
-// incheckwhite=Is_Check_White();
-		// incheckwhite=Is_Check(true,1);
-		incheckwhite=Is_Check(false,1);
-		cout << "In Check White? " << incheckwhite << endl;
-	}
+// 	if(turn == 1){ // white so check Is_Check_Black
+// 		// incheckblack=Is_Check_Black();
+// 		incheckblack=Is_Check(false,true);
+// 		cout << "In Check Black? " << incheckblack << endl;
+// 	}
+// 	if(turn==0){
+// // incheckwhite=Is_Check_White();
+// 		// incheckwhite=Is_Check(true,1);
+// 		incheckwhite=Is_Check(false,1);
+// 		cout << "In Check White? " << incheckwhite << endl;
+// 	}
 
+incheckblack=Is_Check(true,true);
+cout << "In Check Black? " << incheckblack << endl;
 
+incheckwhite=Is_Check(false,true);
+cout << "In Check White? " << incheckwhite << endl;
 
 	//STALEMATE SECTION
 	if(incheckblack==false && turn == 0){
