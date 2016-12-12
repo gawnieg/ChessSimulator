@@ -148,7 +148,7 @@ int Chessboard::submitMove(string position, string position_target){
 	if(errorcode !=0){
 		return errorcode;
 	}
-
+	cout << "Getting here" <<endl;
 	// now see if move is plausible _PIECE SPECIFIC
 	int makemovevar=0; // true if the move is plausible in terms of what piece we are moving.
 	makemovevar=piece->makemove(position, position_target);
@@ -156,7 +156,7 @@ int Chessboard::submitMove(string position, string position_target){
 		cout << piece->getPieceName() << " cannot move to " << position_target<<endl;
 		return makemovevar;
 	}
-
+	cout << "Getting here 1 " <<endl;
 	piece->firstmove =0; // setting the pieces firstmove to zero here. cannot do inside pawn makemove as uses this for possibel move checking
 
 	bool targetexists =false; //true if there is a target piece
@@ -324,6 +324,14 @@ int Chessboard::Make_Temp_Move(string targetposition, Piece* piece, bool colour,
 	cout << "Now checking if this move is allowed occuring by calling Is_Check2" <<endl;
 	#endif
 	int stillcheckblack=0;
+	bool tempcolour;
+	if(colour==true){
+		tempcolour=false;
+	}
+	if(colour==false){
+		tempcolour=true;
+	}
+
 	stillcheckblack=Is_Check(colour,0); // true check checkmate black as white is just after moving
 
 

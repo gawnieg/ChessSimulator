@@ -312,7 +312,7 @@ int Pawn::makemove(const string &position, const string &targetposition){
 				return MOVE_VALID;
 			}
 		}
-		if(this->getPieceColour() ==0){//the piece to be moved is white and it is a diagonal move
+		if(this->getPieceColour() ==1){//the piece to be moved is white and it is a diagonal move
 			//gonna subtract from the number part to move down the board
 			if((targetposition[0]-position[0] ==1 && targetposition[1]-position[1] ==1\
 			&& GetPiecePtrGivenPos(targetposition)!=NULL)){

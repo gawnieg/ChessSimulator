@@ -427,7 +427,7 @@ bool Chessboard::Is_Check(bool colour, bool firstround){
 	}
 
 
-	if(positions_threatening_bking.size() >0 && (colour ==true)){
+	if(positions_threatening_bking.size() >0 && (colour ==true)){ // &&(colour==true)
 		incheck=true;
 	}
 	if(positions_threatening_bking.size() >0 && (colour ==false)){
@@ -437,6 +437,7 @@ bool Chessboard::Is_Check(bool colour, bool firstround){
 	if(positions_threatening_wking.size() >0 && (colour ==false)){
 		incheck=true;
 	}
+
 
 	return incheck;
 

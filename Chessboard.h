@@ -30,7 +30,7 @@ class Chessboard{
 	Pawn *whitep1, *whitep2, *whitep3, *whitep4, *whitep5, *whitep6, *whitep7, *whitep8;
 	Pawn *blackp1, *blackp2, *blackp3, *blackp4, *blackp5, *blackp6, *blackp7, *blackp8;
 	int Check_Move_Valid(string position, Piece* piece);
-	void PrintBoard();
+
 	int Position_within_range(string pos_to_be_checked);
 	int Check_Move_Target_Valid(string position, string targetposition);
 	void Update_Active_Pieces(string position, string position_target, Piece* piece);
@@ -61,6 +61,7 @@ class Chessboard{
 	map<string,Piece*> activepieces;
 	map<string, Piece*>::iterator activeit;
 	void resetBoard();
+		void PrintBoard();
 };
 
 
