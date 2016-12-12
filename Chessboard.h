@@ -39,18 +39,16 @@ class ChessBoard{
 	void Change_Turn();//called at end of submit move to update turn
 	int Check_Same_Colour(string position); //checks if the position passed is the same as turn
 	void Create_List_Board_Positions();//creates a generic list of chess board positions eg. A1, A2, A3 etc
-	bool Is_Check_White();//returns 1 if is in check false if not.
-	bool Is_Check_Black();//returns 1 if is in check false if not.
 	int Clear_Possible_Move_Lists(); // empties possible move lists for all pieces
-	int Check_Checkmate(bool colour);
-	int Check_Stalemate(bool colour);
+	int Check_Checkmate_Stalemate(bool colour, bool c_or_s);
 	int Make_Temp_Move(string targetposition,Piece* piece,bool colour,string tempposition,Piece* temppiece);
 	int Check_Piece_At_Pos(const string &position);
-	bool Is_Check(bool colour, bool firstround);//returns 1 if is in check false if not., uses Check_All_Possible_Moves2
-	int Check_All_Possible_Moves2(string position); // checks all possible moves for a piece in a position
+	bool Is_Check(bool colour, bool firstround);//returns 1 if is in check false if not., uses Check_All_Possible_Moves
+
 	string Where_is_the_king(bool colour);//might delete??
 	void SetupBoard();
 	void Clear_Board();
+	void PrintBoard();
 
 	public:
 	ChessBoard();
@@ -61,7 +59,7 @@ class ChessBoard{
 	map<string,Piece*> activepieces;
 	map<string, Piece*>::iterator activeit;
 	void resetBoard();
-		void PrintBoard();
+
 };
 
 

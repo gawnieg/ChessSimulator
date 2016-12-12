@@ -168,10 +168,10 @@ int ChessBoard::submitMove(string position, string position_target){
 
 	//STALEMATE SECTION
 	if(incheckblack==false && turn == 0){
-		errorcode= Check_Stalemate(false);
+		errorcode=Check_Checkmate_Stalemate(false,false);
 	}
 	if(incheckwhite==false && turn == 1){
-		errorcode= Check_Stalemate(true);
+		errorcode=Check_Checkmate_Stalemate(true,false);
 	}
 	if(errorcode==STALEMATE){
 		cout << "Stalemate" << endl;
@@ -181,7 +181,7 @@ int ChessBoard::submitMove(string position, string position_target){
 
 
 	if(incheckblack==true){//then check checkmate black
-		errorcode= Check_Checkmate(true);
+		errorcode=Check_Checkmate_Stalemate(true,true);
 	}
 	if(errorcode == CHECKMATE){
 		cout<< piece->getPieceName() << " moves from " << position<< " to "\
@@ -190,7 +190,7 @@ int ChessBoard::submitMove(string position, string position_target){
 		return errorcode;
 	}
 	if(incheckwhite==true){ //then check checkmate white
-		errorcode= Check_Checkmate(false);
+		errorcode=Check_Checkmate_Stalemate(false,true);
 	}
 	if(errorcode == CHECKMATE){
 		cout<< piece->getPieceName() << " moves from " << position<< " to "\
@@ -251,8 +251,6 @@ int ChessBoard::Make_Temp_Move(string targetposition, Piece* piece, bool colour,
 	}
 
 	if(stillcheckblack==0){//this move can be made to get rid of the check therefore checkmate is not occuring
-		//break from loop
-		//undo moves and return false to calling submitMove. is not in checkmate
 		Delete_Piece(targetposition);
 		//inserting piece in original position
 		activepieces.insert(pair<string, Piece*>(tempposition, temppiece));
@@ -269,49 +267,12 @@ return TEMP_MOVE_DIDNT_WORK_OUT;//should not reach
 }//end of Temp_Make_Move
 
 
-
-
-
-int ChessBoard::Check_Stalemate(bool colour){
-
-	Piece* piece;
-	Piece* temppiece;
-	string tempposition;
-	int tempreturn=0;
-
-	for(unsigned int i =0; i< piece_possible_moves.size(); i++){
-		activeit = activepieces.find(piece_possible_moves[i]);
-		tempposition=piece_possible_moves[i];
-		if(activeit != activepieces.end() ){
-			piece = activeit->second;
-			temppiece=piece;
-			for(unsigned int k =0; k< piece->actual_possible_moves.size(); k++){
-
-				// //check colour of piece
-				if(piece->getPieceColour()==colour){
-					continue;//if the move is that of the current turn colour then the move will not be considered
-				}
-
-				string targetposition =  piece->actual_possible_moves.at(k);
-				tempreturn= Make_Temp_Move(targetposition,piece,colour,tempposition,temppiece);
-				if(tempreturn==0){ //not stalemate
-					return MOVE_VALID; // no stalmate as there is a move that the colour can make that is not check
-				}
-			}
-		}
-	}
-
-return STALEMATE;
-
-}
-
-
-int ChessBoard::Check_Checkmate(bool colour){
-		//return non zero if checkmate
+int ChessBoard::Check_Checkmate_Stalemate(bool colour, bool c_or_s){
+		//return non zero if checkmate  or stalemate
 		Piece* piece;
 		Piece* temppiece;
 		string tempposition;
-		int tempreturn;
+		int tempreturn=0;
 		for(unsigned int i =0; i< piece_possible_moves.size(); i++){
 			activeit = activepieces.find(piece_possible_moves[i]);
 			tempposition=piece_possible_moves[i];
@@ -332,11 +293,16 @@ int ChessBoard::Check_Checkmate(bool colour){
 			}
 		}
 
-	return CHECKMATE;
+	if(c_or_s==true){
+		return CHECKMATE;
+	}
+	if(c_or_s==false){
+		return STALEMATE;
+	}
+
+	return CHECKMATE; //dummy
 
 }//end of Check_Checkmate_Black
-
-
 
 
 

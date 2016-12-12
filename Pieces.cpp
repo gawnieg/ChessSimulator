@@ -4,21 +4,15 @@
 #include "Chessboard.h"
 #include "errors.h"
 
-// #define COMMENTS_ON
-
 using namespace std;
 
 Piece::Piece(bool _colour, string _name, string _position, ChessBoard* _chessboardptr ){
 
-	// cout<< "Constructing piece"<<endl;
 	piececolour=_colour; //true if black, white if false
 	name=_name; //name of piece
 	position = _position; //holds the position of the piece in form A4
 	chessboardptr=_chessboardptr;  // pieces constructor
 	chessboardptr->setupactivepieces(position,this);
-
-
-
 }
 
 string Piece::getPieceName(){ //getter function
@@ -36,18 +30,12 @@ bool Piece::getPieceColour(){//getter function
 string Piece::setPosition(string future){
 	position = future;
 	return MOVE_VALID; //dummy return unused function
-
 }
-
-
-
 
 
 Queen::Queen( string _name, bool _colour, string _position, ChessBoard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
-	//Queen constuctor
-
-
+	//Queen constuctor - intentionally blank
 	}
 
 int Queen::makemove(const string &position, const string &targetposition){
@@ -61,7 +49,6 @@ int Queen::makemove(const string &position, const string &targetposition){
 	&& position[0] == targetposition[0])\
 	&& Check_If_Blocked_Vertical(position, targetposition)==0 ){
 		return MOVE_VALID;
-
 	}
 	//horizontal movement
 	if(((position[0] -targetposition[0] >=1 ||targetposition[0]-position[0] >=1)\
@@ -69,13 +56,9 @@ int Queen::makemove(const string &position, const string &targetposition){
 	Check_If_Blocked_Horizontal(position, targetposition)==0){
 		 return MOVE_VALID;
 	}
-
-
-
-
-return INVALID_QUEEN_MOVE;
-
+	return INVALID_QUEEN_MOVE;
 }
+
 King::King( string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//King constructor
@@ -105,17 +88,16 @@ int King::makemove(const string &position, const string &targetposition){
 		 return MOVE_VALID;
 	}
 
-
-return INVALID_KING_MOVE;
+	return INVALID_KING_MOVE;
 
 }
 
-/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
 Knight::Knight( string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Knight constructor
-	}
+}
+
 int Knight::makemove(const string &position, const string &targetposition){
 	//check if moves are valid. No blocking checking required for Knight
 	//D4 to E6
@@ -152,9 +134,6 @@ int Knight::makemove(const string &position, const string &targetposition){
 	}
 
 	return KNIGHT_INVALID_MOVE;
-
-
-
 }
 
 
@@ -164,7 +143,6 @@ int Knight::makemove(const string &position, const string &targetposition){
 Rook::Rook( string _name, bool _colour, string _position, ChessBoard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Rook constructor
-
 }
 
 int Rook::makemove(const string &position, const string &targetposition){
@@ -188,9 +166,6 @@ int Rook::makemove(const string &position, const string &targetposition){
 
 
 
-
-/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
 Bishop::Bishop(string _name,bool _colour, string _position, ChessBoard* chessboardptr):\
 	Piece(_colour, _name, _position, chessboardptr)	{
 		//Bishop constructor
@@ -204,9 +179,7 @@ int Bishop::makemove(const string &position, const string &targetposition){
 		return MOVE_VALID;
 	}
 
-
-
-return INVALID_BISHOP_MOVE;
+	return INVALID_BISHOP_MOVE;
 
 }
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -233,7 +206,6 @@ Piece* Piece::GetPiecePtrGivenPos(string position){
 	else{
 		return NULL;
 	}
-
 }
 
 
@@ -491,10 +463,5 @@ int Piece::Check_If_Blocked_Diag(const string &position, const string &targetpos
 		}
 	}
 
-
-
-return MOVE_VALID;
-
-
-
+	return MOVE_VALID;
 }

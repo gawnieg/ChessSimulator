@@ -6,11 +6,8 @@
  #include "Pieces.h"
 
  int main() {
- ChessBoard cb;
 
- cb.resetBoard();
-
-
+ChessBoard cb;
 
 
      cout << "===========================" << endl;
